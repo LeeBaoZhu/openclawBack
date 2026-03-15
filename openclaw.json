@@ -1,0 +1,604 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.3.13",
+    "lastTouchedAt": "2026-03-14T16:28:41.193Z"
+  },
+  "wizard": {
+    "lastRunAt": "2026-03-10T15:27:22.144Z",
+    "lastRunVersion": "2026.3.8",
+    "lastRunCommand": "onboard",
+    "lastRunMode": "local"
+  },
+  "logging": {
+    "level": "info",
+    "file": "/tmp/openclaw.log",
+    "consoleLevel": "info",
+    "consoleStyle": "pretty",
+    "redactPatterns": [
+      "\\bTOKEN\\b\\s*[=:]\\s*([\"']?)([^\\s\"']+)\\1"
+    ]
+  },
+  "browser": {
+    "enabled": true,
+    "color": "#FF4500",
+    "headless": false,
+    "defaultProfile": "openclaw",
+    "ssrfPolicy": {
+      "dangerouslyAllowPrivateNetwork": true
+    },
+    "profiles": {
+      "openclaw": {
+        "cdpPort": 18800,
+        "color": "#FF4500"
+      },
+      "work": {
+        "cdpPort": 18801,
+        "color": "#0066CC"
+      }
+    }
+  },
+  "models": {
+    "providers": {
+      "dashscope": {
+        "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "apiKey": "sk-4997dcc383004acba9e3998a58d1e9e2",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "qwen-plus",
+            "name": "Qwen Plus (PayGo)",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 1000000,
+            "maxTokens": 8192
+          },
+          {
+            "id": "qwen-turbo",
+            "name": "Qwen Turbo (PayGo)",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 1000000,
+            "maxTokens": 8192
+          },
+          {
+            "id": "qwen-vl-plus",
+            "name": "Qwen VL Plus (PayGo)",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 128000,
+            "maxTokens": 4096
+          }
+        ]
+      },
+      "dashscope-coding": {
+        "baseUrl": "https://coding.dashscope.aliyuncs.com/v1",
+        "apiKey": "sk-sp-bbd3329721c04a4a91dff7e233d28ae5",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "qwen3.5-plus",
+            "name": "Qwen3.5 Plus (Coding Plan)",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 1000000,
+            "maxTokens": 65536
+          },
+          {
+            "id": "qwen3-max-2026-01-23",
+            "name": "Qwen3 Max (Coding Plan)",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 262144,
+            "maxTokens": 65536
+          },
+          {
+            "id": "kimi-k2.5",
+            "name": "Kimi K2.5 (Coding Plan)",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 262144,
+            "maxTokens": 32768
+          },
+          {
+            "id": "MiniMax-M2.5",
+            "name": "MiniMax M2.5 (Coding Plan)",
+            "api": "openai-completions",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 204800,
+            "maxTokens": 131072
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "dashscope-coding/qwen3.5-plus",
+        "fallbacks": [
+          "dashscope-coding/kimi-k2.5",
+          "dashscope/qwen-plus"
+        ]
+      },
+      "imageModel": {
+        "primary": "dashscope-image/qwen-image-2.0",
+        "fallbacks": []
+      },
+      "pdfModel": {
+        "primary": "dashscope-coding/qwen3.5-plus",
+        "fallbacks": [
+          "dashscope/qwen-vl-plus"
+        ]
+      },
+      "pdfMaxBytesMb": 10,
+      "pdfMaxPages": 20,
+      "models": {
+        "dashscope-coding/qwen3.5-plus": {
+          "alias": "coding"
+        },
+        "dashscope-coding/kimi-k2.5": {
+          "alias": "kimi"
+        },
+        "dashscope-coding/qwen3-max-2026-01-23": {
+          "alias": "max"
+        },
+        "dashscope/qwen-plus": {
+          "alias": "plus-paygo"
+        },
+        "dashscope/qwen-turbo": {
+          "alias": "light"
+        },
+        "dashscope/qwen-vl-plus": {
+          "alias": "vl"
+        },
+        "dashscope-image/qwen-image-2.0": {
+          "alias": "draw"
+        },
+        "dashscope-audio/qwen3-tts-flash": {
+          "alias": "tts"
+        }
+      },
+      "workspace": "~/.openclaw/workspace",
+      "repoRoot": "~/Projects/openclaw",
+      "skipBootstrap": false,
+      "bootstrapMaxChars": 20000,
+      "bootstrapTotalMaxChars": 300000,
+      "bootstrapPromptTruncationWarning": "always",
+      "contextTokens": 200000,
+      "contextPruning": {
+        "mode": "cache-ttl",
+        "ttl": "1h",
+        "keepLastAssistants": 3,
+        "softTrimRatio": 0.3,
+        "hardClearRatio": 0.5,
+        "minPrunableToolChars": 50000,
+        "tools": {
+          "deny": [
+            "canvas"
+          ]
+        },
+        "softTrim": {
+          "maxChars": 4000,
+          "headChars": 1500,
+          "tailChars": 1500
+        },
+        "hardClear": {
+          "enabled": true,
+          "placeholder": "[Old tool result content cleared]"
+        }
+      },
+      "compaction": {
+        "mode": "safeguard",
+        "reserveTokensFloor": 24000,
+        "identifierPolicy": "strict",
+        "identifierInstructions": "Preserve deployment IDs, ticket IDs, and host:port pairs exactly.",
+        "postCompactionSections": [
+          "Session Startup",
+          "Red Lines"
+        ],
+        "model": "dashscope/qwen-turbo",
+        "memoryFlush": {
+          "enabled": true,
+          "softThresholdTokens": 6000,
+          "prompt": "Write any lasting notes to memory/YYYY-MM-DD.md; reply with NO_REPLY if nothing to store.",
+          "systemPrompt": "Session nearing compaction. Store durable memories now."
+        }
+      },
+      "thinkingDefault": "low",
+      "verboseDefault": "off",
+      "elevatedDefault": "on",
+      "blockStreamingDefault": "off",
+      "blockStreamingBreak": "text_end",
+      "blockStreamingChunk": {
+        "minChars": 800,
+        "maxChars": 1200
+      },
+      "blockStreamingCoalesce": {
+        "idleMs": 1000
+      },
+      "humanDelay": {
+        "mode": "natural",
+        "minMs": 800,
+        "maxMs": 2500
+      },
+      "timeoutSeconds": 600,
+      "mediaMaxMb": 5,
+      "typingIntervalSeconds": 6,
+      "typingMode": "instant",
+      "heartbeat": {
+        "every": "30m",
+        "model": "dashscope/qwen-turbo",
+        "session": "main",
+        "includeReasoning": false,
+        "target": "none",
+        "directPolicy": "allow",
+        "to": "+8618186144326",
+        "prompt": "Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.",
+        "ackMaxChars": 300,
+        "suppressToolErrorWarnings": false,
+        "lightContext": false
+      },
+      "maxConcurrent": 10,
+      "sandbox": {
+        "mode": "off"
+      }
+    },
+    "list": [
+      {
+        "id": "main",
+        "default": true,
+        "name": "CEO Agent",
+        "workspace": "~/.openclaw/workspace",
+        "model": {
+          "primary": "dashscope-coding/qwen3.5-plus",
+          "fallbacks": [
+            "dashscope-coding/qwen3-max-2026-01-23",
+            "dashscope-coding/kimi-k2.5"
+          ]
+        },
+        "identity": {
+          "name": "CEO",
+          "theme": "executive leader",
+          "emoji": "👔",
+          "avatar": "avatar/CEO.png"
+        },
+        "groupChat": {
+          "mentionPatterns": [
+            "@openclaw",
+            "@助手"
+          ]
+        },
+        "subagents": {
+          "allowAgents": [
+            "*"
+          ]
+        },
+        "tools": {
+          "profile": "coding",
+          "allow": [
+            "browser",
+            "read",
+            "write",
+            "edit",
+            "exec",
+            "process",
+            "sessions_list",
+            "sessions_history",
+            "sessions_send",
+            "sessions_spawn",
+            "session_status",
+            "subagents",
+            "image",
+            "canvas",
+            "memory_search",
+            "memory_get",
+            "web_fetch",
+            "message"
+          ],
+          "deny": [
+            "nodes.camera.snap",
+            "nodes.screen.record",
+            "bash",
+            "nodes.camera.stream",
+            "nodes.mic.record",
+            "nodes.speaker.play"
+          ]
+        }
+      }
+    ]
+  },
+  "tools": {
+    "profile": "coding",
+    "allow": [
+      "browser",
+      "read",
+      "write",
+      "edit",
+      "exec",
+      "process",
+      "sessions_list",
+      "sessions_history",
+      "sessions_send",
+      "sessions_spawn",
+      "session_status",
+      "subagents",
+      "cron",
+      "gateway",
+      "image",
+      "canvas",
+      "memory_search",
+      "memory_get",
+      "web_search",
+      "web_fetch",
+      "message"
+    ],
+    "deny": [
+      "nodes.camera.snap",
+      "nodes.screen.record",
+      "bash",
+      "nodes.camera.stream",
+      "nodes.mic.record",
+      "nodes.speaker.play"
+    ],
+    "web": {
+      "search": {
+        "enabled": true
+      },
+      "fetch": {
+        "enabled": true,
+        "maxChars": 50000,
+        "timeoutSeconds": 30,
+        "userAgent": "OpenClaw/1.0"
+      }
+    },
+    "agentToAgent": {
+      "enabled": true,
+      "allow": [
+        "*"
+      ]
+    },
+    "elevated": {
+      "enabled": true
+    }
+  },
+  "broadcast": {},
+  "audio": {},
+  "messages": {
+    "responsePrefix": "🦞",
+    "groupChat": {
+      "mentionPatterns": [
+        "@openclaw",
+        "@助手"
+      ],
+      "historyLimit": 50
+    },
+    "queue": {
+      "mode": "collect",
+      "byChannel": {
+        "whatsapp": "collect",
+        "telegram": "collect",
+        "discord": "steer"
+      },
+      "debounceMs": 1000,
+      "cap": 20,
+      "drop": "summarize"
+    },
+    "inbound": {
+      "debounceMs": 2000,
+      "byChannel": {
+        "whatsapp": 5000,
+        "slack": 1500,
+        "telegram": 3000
+      }
+    },
+    "ackReaction": "👀",
+    "removeAckAfterReply": true
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "text": true,
+    "bash": false,
+    "bashForegroundMs": 2000,
+    "config": false,
+    "debug": false,
+    "restart": true,
+    "useAccessGroups": true,
+    "ownerDisplay": "raw",
+    "allowFrom": {}
+  },
+  "approvals": {
+    "exec": {}
+  },
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
+  "cron": {
+    "enabled": true,
+    "store": "~/.openclaw/cron/jobs.json",
+    "maxConcurrentRuns": 2,
+    "retry": {
+      "maxAttempts": 3,
+      "backoffMs": [
+        60000,
+        120000,
+        300000
+      ],
+      "retryOn": [
+        "rate_limit",
+        "overloaded",
+        "network",
+        "server_error"
+      ]
+    },
+    "webhookToken": "p8cVPh7XgFU1GBKMOmyz0juJTxf9aqdrE4i5nvlZCbSD3LH2oW6kYAweItsNQR",
+    "sessionRetention": "24h",
+    "runLog": {
+      "maxBytes": "2mb",
+      "keepLines": 2000
+    }
+  },
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "bootstrap-extra-files": {
+          "enabled": true
+        },
+        "command-logger": {
+          "enabled": true
+        },
+        "session-memory": {
+          "enabled": true
+        },
+        "boot-md": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "canvasHost": {
+    "enabled": true,
+    "root": "~/.openclaw/workspace/canvas",
+    "liveReload": true
+  },
+  "gateway": {
+    "port": 12328,
+    "mode": "local",
+    "bind": "loopback",
+    "controlUi": {
+      "enabled": true,
+      "basePath": "/leo"
+    },
+    "auth": {
+      "mode": "token",
+      "token": "7d3669d2a28f94bc8a45dbbf6aa43aa611380b3367660175"
+    },
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "reload": {
+      "mode": "hybrid",
+      "debounceMs": 300
+    },
+    "tls": {
+      "enabled": false
+    },
+    "nodes": {
+      "denyCommands": [
+        "camera.snap",
+        "camera.clip",
+        "screen.record",
+        "contacts.add",
+        "calendar.add",
+        "reminders.add",
+        "sms.send"
+      ]
+    }
+  },
+  "skills": {
+    "entries": {
+      "tavily-search": {
+        "apiKey": "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"
+      }
+    }
+  },
+  "plugins": {
+    "allow": [
+      "openclaw-tavily"
+    ],
+    "entries": {
+      "qwen-portal-auth": {
+        "enabled": true
+      },
+      "openclaw-tavily": {
+        "enabled": true,
+        "config": {
+          "apiKey": "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"
+        }
+      }
+    },
+    "installs": {
+      "openclaw-tavily": {
+        "source": "npm",
+        "spec": "openclaw-tavily",
+        "installPath": "C:\\Users\\28964\\.openclaw\\extensions\\openclaw-tavily",
+        "version": "0.2.1",
+        "resolvedName": "openclaw-tavily",
+        "resolvedVersion": "0.2.1",
+        "resolvedSpec": "openclaw-tavily@0.2.1",
+        "integrity": "sha512-Y/cYTiKWGjWm8TF0/0DGyB80Kuke1oJKEPcFvjmHutXSZSx42RmMqZ3I6kMz12hw1eoxJwQ8a0EJQAvq45KciQ==",
+        "shasum": "544d324879914108c50cfd801d7cff704069970d",
+        "resolvedAt": "2026-03-14T14:36:50.232Z",
+        "installedAt": "2026-03-14T14:36:54.025Z"
+      }
+    }
+  }
+}
