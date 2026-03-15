@@ -70,10 +70,45 @@
           "operator.pairing"
         ],
         "createdAtMs": 1773157677428,
-        "lastUsedAtMs": 1773533524954
+        "lastUsedAtMs": 1773585374873
       }
     },
     "createdAtMs": 1773157677428,
     "approvedAtMs": 1773157677428
+  },
+  "3a1f53f6eb907f6c07b14ec41d2f30636d685a795fa6680eb47a92adf6eaf8cf": {
+    "deviceId": "3a1f53f6eb907f6c07b14ec41d2f30636d685a795fa6680eb47a92adf6eaf8cf",
+    "publicKey": "cNuUy3ScljAKi8__RSJ431tjNqVY84OU7NC0eMON544",
+    "platform": "Win32",
+    "clientId": "openclaw-control-ui",
+    "clientMode": "webchat",
+    "role": "operator",
+    "roles": [
+      "operator"
+    ],
+    "scopes": [
+      "operator.admin",
+      "operator.approvals",
+      "operator.pairing"
+    ],
+    "approvedScopes": [
+      "operator.admin",
+      "operator.approvals",
+      "operator.pairing"
+    ],
+    "tokens": {
+      "operator": {
+        "token": "mYtUYRh4wMcvhqULsIGTrulM2Ka9cv5dVA5n4sUHVGc",
+        "role": "operator",
+        "scopes": [
+          "operator.admin",
+          "operator.approvals",
+          "operator.pairing"
+        ],
+        "createdAtMs": 1773537135651
+      }
+    },
+    "createdAtMs": 1773537135650,
+    "approvedAtMs": 1773537135650
   }
 }

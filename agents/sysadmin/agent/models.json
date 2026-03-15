@@ -42,7 +42,7 @@
     },
     "dashscope": {
       "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-      "apiKey": "__ENV_DASHSCOPE_API_KEY__",
+      "apiKey": "sk-4997dcc383004acba9e3998a58d1e9e2",
       "api": "openai-completions",
       "models": [
         {
@@ -83,7 +83,7 @@
     },
     "dashscope-coding": {
       "baseUrl": "https://coding.dashscope.aliyuncs.com/v1",
-      "apiKey": "__ENV_DASHSCOPE_CODING_API_KEY__",
+      "apiKey": "sk-sp-bbd3329721c04a4a91dff7e233d28ae5",
       "api": "openai-completions",
       "models": [
         {
