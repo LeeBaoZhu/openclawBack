@@ -484,6 +484,165 @@
             "nodes.speaker.play"
           ]
         }
+      },
+      {
+        "id": "strategist",
+        "name": "战略规划师",
+        "workspace": "~/.openclaw/workspace-strategist",
+        "model": {
+          "primary": "dashscope-coding/glm-5",
+          "fallbacks": [
+            "dashscope-coding/qwen3.5-plus",
+            "dashscope-coding/qwen3-max-2026-01-23"
+          ]
+        },
+        "identity": {
+          "name": "Strategist",
+          "theme": "strategic planner and coach",
+          "emoji": "🎯",
+          "avatar": "avatar/Strategist.png"
+        },
+        "heartbeat": {
+          "every": "7d",
+          "model": "dashscope-coding/glm-5",
+          "session": "strategist",
+          "prompt": "检查战略进展：1. 读取当前战略文档和 OKR 2. 查看近期复盘记录 3. 提醒用户进行周/月复盘 4. 生成进展报告",
+          "to": "+8618186144326",
+          "directPolicy": "allow"
+        },
+        "tools": {
+          "profile": "coding",
+          "allow": [
+            "read",
+            "write",
+            "edit",
+            "process",
+            "session_status",
+            "memory_search",
+            "memory_get",
+            "web_fetch"
+          ],
+          "deny": [
+            "apply_patch",
+            "browser",
+            "canvas",
+            "exec",
+            "message",
+            "sessions_send",
+            "nodes.camera.snap",
+            "nodes.screen.record",
+            "bash",
+            "nodes.camera.stream",
+            "nodes.mic.record",
+            "nodes.speaker.play"
+          ]
+        }
+      },
+      {
+        "id": "lifehelper",
+        "name": "生活助理",
+        "workspace": "~/.openclaw/workspace-lifehelper",
+        "model": {
+          "primary": "dashscope-coding/qwen3.5-plus",
+          "fallbacks": [
+            "dashscope-coding/glm-5",
+            "dashscope-coding/kimi-k2.5"
+          ]
+        },
+        "identity": {
+          "name": "LifeHelper",
+          "theme": "lifestyle assistant and advisor",
+          "emoji": "🏠",
+          "avatar": "avatar/LifeHelper.png"
+        },
+        "heartbeat": {
+          "every": "7d",
+          "model": "dashscope-coding/qwen3.5-plus",
+          "session": "lifehelper",
+          "prompt": "生活趋势更新：1. 搜索最新生活资讯和趋势 2. 更新用户偏好设置 3. 提供季节性生活建议 4. 记录用户生活习惯变化",
+          "to": "+8618186144326",
+          "directPolicy": "allow"
+        },
+        "tools": {
+          "profile": "coding",
+          "allow": [
+            "read",
+            "write",
+            "edit",
+            "process",
+            "session_status",
+            "memory_search",
+            "memory_get",
+            "web_fetch"
+          ],
+          "deny": [
+            "apply_patch",
+            "browser",
+            "canvas",
+            "exec",
+            "message",
+            "sessions_send",
+            "nodes.camera.snap",
+            "nodes.screen.record",
+            "bash",
+            "nodes.camera.stream",
+            "nodes.mic.record",
+            "nodes.speaker.play"
+          ]
+        }
+      },
+      {
+        "id": "healthadvisor",
+        "name": "健康顾问",
+        "workspace": "~/.openclaw/workspace-healthadvisor",
+        "model": {
+          "primary": "dashscope-coding/glm-5",
+          "fallbacks": [
+            "dashscope-coding/qwen3.5-plus",
+            "dashscope-coding/kimi-k2.5"
+          ]
+        },
+        "identity": {
+          "name": "HealthAdvisor",
+          "theme": "health and wellness advisor",
+          "emoji": "💚",
+          "avatar": "avatar/HealthAdvisor.png"
+        },
+        "heartbeat": {
+          "every": "7d",
+          "model": "dashscope-coding/glm-5",
+          "session": "healthadvisor",
+          "prompt": "健康追踪：1. 查看用户健康记录和进展 2. 更新健康目标 3. 提供季节性健康建议 4. 追踪健康习惯执行情况",
+          "to": "+8618186144326",
+          "directPolicy": "allow"
+        },
+        "tools": {
+          "profile": "coding",
+          "allow": [
+            "read",
+            "write",
+            "edit",
+            "process",
+            "session_status",
+            "memory_search",
+            "memory_get",
+            "web_fetch"
+          ],
+          "deny": [
+            "apply_patch",
+            "browser",
+            "canvas",
+            "exec",
+            "message",
+            "sessions_send",
+            "nodes.camera.snap",
+            "nodes.screen.record",
+            "bash",
+            "nodes.camera.stream",
+            "nodes.mic.record",
+            "nodes.speaker.play"
+          ]
+        }
       }
     ]
   },
@@ -648,7 +807,8 @@
     "bind": "loopback",
     "controlUi": {
       "enabled": true,
-      "basePath": "/leo"
+      "basePath": "/leo",
+      "allowInsecureAuth": true
     },
     "auth": {
       "mode": "token",

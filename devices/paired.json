@@ -4,7 +4,7 @@
     "publicKey": "-U_PZedMEvzf_hQG0Zr6h7tUoajmmsmaQyu3DbS39fM",
     "platform": "win32",
     "clientId": "cli",
-    "clientMode": "probe",
+    "clientMode": "cli",
     "role": "operator",
     "roles": [
       "operator"
@@ -70,7 +70,7 @@
           "operator.pairing"
         ],
         "createdAtMs": 1773157677428,
-        "lastUsedAtMs": 1773585374873
+        "lastUsedAtMs": 1773848067634
       }
     },
     "createdAtMs": 1773157677428,

@@ -14,21 +14,45 @@
 ## 示例
 
 ```markdown
-### 日志
+## 日志
 
-- 主日志：`C:\Users\28964\.openclaw\openclaw.log` 或 `%TEMP%\openclaw.log`
-- 配置中：`logging.file: "/tmp/openclaw.log"`（Windows 下可能映射到 TEMP）
+### 日志位置 ⭐
+- **配置路径**: `logging.file: "/tmp/openclaw.log"`
+- **实际访问**: 日志由 Gateway 进程管理，不直接对应文件系统路径
+- **查看方法**:
+  1. **Control UI** - 自动通过 WebSocket 读取日志
+  2. **命令行**: `openclaw logs --follow` 查看实时日志
+  3. **Gateway 状态**: `openclaw gateway status` 显示日志配置
 
-### 脚本
+### 日志分析脚本
+- 检查日志：`scripts/check-system-logs.ps1`（全面检查）
+- 搜索日志：`scripts/search-all-logs.ps1`（搜索所有位置）
+- 快速查找：`scripts/find-log.ps1`（快速定位）
 
-- 检查日志：`scripts/check-logs.ps1 -SinceHours 24`（昨日）
-- 工作区根目录执行：`.\scripts\check-logs.ps1 -SinceHours 24`
+### 日志轮转
+- **计划任务**: `OpenClaw\LogRotation`（每周日凌晨 2 点执行）
+- **备份目录**: `C:\Users\28964\.openclaw\logs\`
+- **保留时间**: 30 天
+- **执行脚本**: `scripts/rotate-logs.ps1`
+
+### 日志级别
+- **配置**: `logging.level: "info"`
+- **控制台**: `logging.consoleLevel: "info"`
+- **脱敏**: 自动脱敏 TOKEN 等敏感信息
 
 ### openclaw 命令
 
 - `openclaw config show` — 查看当前配置
 - `openclaw gateway status` / `openclaw gateway restart` — Gateway 状态与重启
 - `openclaw sandbox explain` — 沙盒/工具策略诊断
+
+### 工具使用注意 ⭐
+
+- **`process` 工具** — 用于管理已存在的 exec 会话（action: list/poll/log/write/send-keys/submit/paste/kill）
+  - ❌ 不能用 `process(action=spawn)` 创建新会话
+  - ✅ 运行命令用 `exec`
+  - ✅ 读取配置用 `read`
+- **失败处理** — 工具调用失败一次就停止，分析原因后再行动，不要重复尝试
 
 ### 报告接收
 
