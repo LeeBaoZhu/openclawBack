@@ -3,7 +3,7 @@
 本文档由系统维护员维护，用于说明与跟踪 `openclaw.json` 的配置：核心摘要、变更历史、已知问题与待确认事项。配置变更或巡检结论更新时请同步修改此处。
 
 ## 最后更新
-2026-03-15 08:50
+2026-03-19 22:59
 
 ## 核心配置摘要
 
@@ -45,6 +45,8 @@
 
 | 日期 | 变更内容 | 原因 |
 |------|----------|------|
+| 2026-03-19 | 创建 Agent 创建技能 `workspace-sysadmin/skills/agent-creator/` | 标准化 Agent 创建流程，供 sysadmin 自用 |
+| 2026-03-19 | 创建全局技能规范 `~/.openclaw/docs/skill-structure.md` | 统一各 Agent 技能目录结构 |
 | 2026-03-15 | 添加 `apply_patch` 到 deny 列表 | 模型不支持该工具，启动报错 |
 | 2026-03-15 | 创建 sysadmin agent | 系统维护自动化需求 |
 
@@ -55,6 +57,17 @@
 - [ ] 日志文件实际位置确认（/tmp/openclaw.log 或 ~/.openclaw/openclaw.log）
 - [ ] 日志轮转策略是否需要配置
 - [ ] 是否需要添加更多监控指标（token 用量、API 调用失败率）
+- [ ] 全局技能目录 `~/.openclaw/skills/` 是否需要预创建
+
+---
+
+## 文档索引
+
+| 文档 | 用途 |
+|------|------|
+| `~/.openclaw/docs/skill-structure.md` | 技能存放规范（全局） |
+| `workspace-sysadmin/skills/agent-creator/SKILL.md` | Agent 创建技能（sysadmin 自用） |
+| `docs/config-notes.md` | 本文件：openclaw.json 配置说明 |
 
 ---
 

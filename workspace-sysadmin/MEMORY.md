@@ -107,6 +107,25 @@ openclaw sandbox explain
 - ✅ 失败一次就停止，分析原因后再行动
 - ✅ 优先用简单直接的方法（如 `read` 读配置）
 
+### 2026-03-19 ⭐ 重要教训
+**错误**: 创建 `agent-creator` 技能时，先放在了全局目录 `~/.openclaw/skills/`，后来才意识到应该放在 sysadmin 工作区。
+
+**原因**: 
+- 没有先判断技能的使用范围
+- 忘记了刚制定的技能存放规范
+- 本能地放在了「顺手」的全局位置
+
+**解决方案**:
+- 技能存放前先看 `~/.openclaw/docs/skill-structure.md`
+- 问自己：「这个技能是所有 Agent 都需要用，还是只有某个 Agent 专用？」
+- **全局技能** → `~/.openclaw/skills/`（如 tavily-search）
+- **专属技能** → `workspace-<agent>/skills/`（如 agent-creator 仅供 sysadmin 使用）
+
+**改进措施**:
+- ✅ 已更新 `agent-creator` 技能到正确位置 `workspace-sysadmin/skills/`
+- ✅ 在 `agent-creator/SKILL.md` 开头添加说明：「本技能仅供 sysadmin 使用」
+- ✅ 在技能规范文档中强调判断标准
+
 ### 其他经验
 - **工具配置档兼容性** - `coding` profile 默认包含 `apply_patch`，但并非所有模型都支持。遇到未知工具报错时，先检查模型能力，再用 `tools.deny` 排除。
 - **心跳频率选择** - 系统维护类任务 24h 足够，过于频繁会浪费 token；用户交互类心跳 30m 合适。

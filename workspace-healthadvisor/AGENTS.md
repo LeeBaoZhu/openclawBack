@@ -160,6 +160,10 @@ workspace-healthadvisor/
 
 技能（Skills）定义工具怎么用；本工作区的**环境与命令速查**写在 `TOOLS.md`。需要时先查 TOOLS.md，再查技能。
 
+### 📚 技能规范
+
+创建或修改技能前，先读 **`~/.openclaw/docs/skill-structure.md`** — 统一技能存放位置与编写标准。
+
 ---
 
 _健康不是一切，但没有健康就没有一切。_
