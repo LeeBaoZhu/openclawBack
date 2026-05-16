@@ -1,0 +1,18 @@
+# References Directory
+
+Place documentation and reference material here for Codex to consult as needed.
+
+## When to use
+
+- API documentation
+- Database schemas
+- Company policies
+- Domain-specific knowledge
+- Detailed workflow guides
+
+## Best practices
+
+1. Keep files under 10k words when possible
+2. Include table of contents for files >100 lines
+3. Reference directly from SKILL.md (one level deep)
+4. Avoid duplication with SKILL.md content

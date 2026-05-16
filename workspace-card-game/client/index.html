@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2v2 棋牌游戏 - 大厅</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .lobby {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      text-align: center;
+      max-width: 450px;
+      width: 90%;
+    }
+    
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+    
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: bold;
+    }
+    
+    input[type="text"] {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    
+    input[type="text"]:focus {
+      border-color: #667eea;
+    }
+    
+    button {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-weight: bold;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    .stats-link {
+      display: block;
+      margin-top: 20px;
+      color: #667eea;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    
+    .stats-link:hover {
+      text-decoration: underline;
+    }
+    
+    .emoji {
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+    
+    .features {
+      margin-top: 25px;
+      padding-top: 25px;
+      border-top: 1px solid #eee;
+      text-align: left;
+    }
+    
+    .features h3 {
+      color: #333;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    
+    .features ul {
+      list-style: none;
+      color: #666;
+      font-size: 13px;
+    }
+    
+    .features li {
+      padding: 5px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    
+    .features li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        min-height: 100dvh;
+        padding: 12px;
+        align-items: stretch;
+      }
+
+      .lobby {
+        width: 100%;
+        max-width: none;
+        border-radius: 14px;
+        padding: 20px 14px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .subtitle {
+        margin-bottom: 18px;
+      }
+
+      input[type="text"] {
+        padding: 12px;
+      }
+
+      button {
+        padding: 12px;
+        font-size: 16px;
+      }
+
+      .features {
+        margin-top: 18px;
+        padding-top: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="lobby">
+      <div class="emoji">🎮</div>
+      <h1>2v2 棋牌游戏</h1>
+      <p class="subtitle">双扣 · 对家作战</p>
+      
+      <div class="input-group">
+        <label>昵称</label>
+        <input 
+          v-model="nickname" 
+          placeholder="固定账号：玩家1 / 玩家2 / 玩家3 / 玩家4"
+          @keyup.enter="join"
+          maxlength="20"
+        />
+      </div>
+      
+      <button @click="join" :disabled="!nickname.trim()">
+        加入游戏
+      </button>
+      
+      <a href="stats.html" class="stats-link">📊 查看战绩统计</a>
+      
+      <div class="features">
+        <h3>🎯 游戏特色</h3>
+        <ul>
+          <li>2v2 对家模式，队友配合</li>
+          <li>逐张发牌，支持暂停</li>
+          <li>管理员可控制发牌速度</li>
+          <li>管理员可回退出牌</li>
+          <li>自动理牌（5、大小王、3、2 优先）</li>
+          <li>战绩统计记录</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+    
+    createApp({
+      data() {
+        return {
+          nickname: ''
+        };
+      },
+      methods: {
+        join() {
+          if (!this.nickname.trim()) {
+            alert('请输入昵称');
+            return;
+          }
+          
+          // 保存昵称（管理员身份在后端固定）
+          localStorage.setItem('nickname', this.nickname.trim());
+          
+          // 跳转到游戏页面
+          window.location.href = 'game.html';
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>

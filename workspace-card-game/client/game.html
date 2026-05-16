@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2v2 棋牌游戏 - 游戏中</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.06), transparent 28%),
+        linear-gradient(180deg, #1f5a28 0%, #15461f 100%);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    
+    .top-bar {
+      background: linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,0.35));
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      border-bottom: 1px solid rgba(255, 206, 84, 0.35);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    }
+    
+    .game-status {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .status-badge {
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border: 1px solid rgba(255,255,255,0.35);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    
+    .status-playing { background: #4CAF50; }
+    .status-paused { background: #FF9800; }
+    .status-dealing { background: #2196F3; }
+    
+    .controls-bar {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .game-table {
+      flex: 1;
+      position: relative;
+      max-width: 800px;
+      max-height: 600px;
+      margin: 10px auto;
+      background:
+        radial-gradient(circle at 50% 45%, #2f8c3e 0%, #1f6a2f 55%, #185526 100%);
+      border-radius: 200px;
+      border: 10px solid #9c5a20;
+      box-shadow:
+        0 10px 30px rgba(0,0,0,0.35),
+        inset 0 0 0 4px rgba(255,219,132,0.35);
+      overflow: hidden;
+    }
+
+    .game-table::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08), transparent 45%),
+        linear-gradient(135deg, rgba(255,255,255,0.05), transparent 35%, rgba(255,255,255,0.03));
+    }
+
+    .center-zone {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 58%;
+      min-height: 100px;
+      background: rgba(13, 40, 20, 0.4);
+      border: 1px dashed rgba(255,223,140,0.7);
+      border-radius: 12px;
+      padding: 8px;
+      color: #fff;
+      text-align: center;
+      overflow-y: auto;
+      max-height: 38%;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.25);
+    }
+
+    .center-empty {
+      font-size: 13px;
+      opacity: 0.8;
+      line-height: 84px;
+    }
+
+    .center-play {
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    .center-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .mini-card {
+      background: #fff;
+      color: #333;
+      border-radius: 4px;
+      padding: 2px 5px;
+      font-size: 11px;
+      min-width: 24px;
+      border: 1px solid #ddd;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    
+    .player {
+      position: absolute;
+      padding: 15px 25px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(242,247,255,0.95));
+      border-radius: 14px;
+      border: 3px solid #d3d8e3;
+      min-width: 120px;
+      text-align: center;
+      transition: all 0.3s;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+    
+    .player.current {
+      border-color: #FFC107;
+      box-shadow: 0 0 20px rgba(255, 193, 7, 0.6);
+      transform: scale(1.05);
+    }
+    
+    .player.teammate {
+      border-color: #4CAF50;
+    }
+    
+    .player.admin {
+      border-color: #9C27B0;
+    }
+    
+    .player.top { 
+      top: 10px; 
+      left: 50%; 
+      transform: translateX(-50%); 
+    }
+    .player.bottom { 
+      bottom: 10px; 
+      left: 50%; 
+      transform: translateX(-50%); 
+    }
+    .player.left { 
+      left: 10px; 
+      top: 50%; 
+      transform: translateY(-50%); 
+    }
+    .player.right { 
+      right: 10px; 
+      top: 50%; 
+      transform: translateY(-50%); 
+    }
+    
+    .player-name {
+      font-weight: bold;
+      color: #253045;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+    }
+    
+    .card-count {
+      font-size: 14px;
+      color: #5f6a7d;
+      margin-top: 5px;
+    }
+    
+    .hand-area {
+      background: linear-gradient(180deg, rgba(8,29,16,0.55), rgba(4,20,11,0.55));
+      padding: 15px;
+      text-align: center;
+      min-height: 100px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      border-top: 1px solid rgba(255,208,116,0.35);
+      box-shadow: inset 0 10px 20px rgba(0,0,0,0.2);
+    }
+    
+    .card {
+      display: inline-block;
+      width: 45px;
+      height: 70px;
+      background: linear-gradient(180deg, #ffffff 0%, #f6f8ff 100%);
+      border: 1px solid #b9bfd0;
+      border-radius: 7px;
+      margin: 3px;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 70px;
+      text-align: center;
+      transition: transform 0.2s;
+      user-select: none;
+      touch-action: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .card.selected {
+      background: linear-gradient(180deg, #fff7bf 0%, #ffe27a 100%);
+      transform: translateY(-15px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    }
+
+    .card.arrange-draggable {
+      cursor: grab;
+    }
+
+    .card.arrange-dragging {
+      opacity: 0.75;
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    }
+    
+    .card.red { color: #d32f2f; }
+    .card.black { color: #212121; }
+    
+    .bottom-controls {
+      text-align: center;
+      padding: 15px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.58));
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      align-items: center;
+      border-top: 1px solid rgba(255,206,84,0.35);
+    }
+    
+    button {
+      padding: 12px 30px;
+      font-size: 16px;
+      cursor: pointer;
+      border: 1px solid rgba(0,0,0,0.22);
+      border-radius: 18px;
+      transition: all 0.2s;
+      font-weight: bold;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .play-btn { 
+      background: linear-gradient(180deg, #ffd666, #f0a70a);
+      color: #4b2f00; 
+    }
+    .play-btn:hover:not(:disabled) {
+      filter: brightness(1.05);
+    }
+    
+    .pass-btn { 
+      background: linear-gradient(180deg, #f9fbff, #d2dae8); 
+      color: #304058; 
+    }
+    .pass-btn:hover:not(:disabled) {
+      filter: brightness(1.04);
+    }
+    
+    .pause-btn {
+      background: linear-gradient(180deg, #ffd666, #f2a90f);
+      color: white;
+    }
+    
+    .resume-btn {
+      background: linear-gradient(180deg, #6de58a, #2abf57);
+      color: white;
+    }
+    
+    .admin-btn {
+      background: linear-gradient(180deg, #ba68f4, #8c32d1);
+      color: white;
+    }
+    
+    .message {
+      text-align: center;
+      padding: 10px;
+      color: white;
+      font-size: 16px;
+      min-height: 30px;
+      background: rgba(0,0,0,0.22);
+      text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    }
+    
+    .game-over {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    
+    .game-over-content {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 400px;
+    }
+    
+    .game-over h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 400px;
+      width: 90%;
+    }
+    
+    .modal-content h3 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    
+    .input-group {
+      margin-bottom: 20px;
+    }
+    
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #666;
+    }
+    
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    
+    .deal-progress {
+      text-align: center;
+      color: white;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .score-bar, .trump-bar, .arrange-bar {
+      background: linear-gradient(180deg, rgba(15,53,27,0.68), rgba(10,39,20,0.65));
+      color: #fff;
+      padding: 8px 12px;
+      font-size: 13px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid rgba(255,206,84,0.2);
+      border-bottom: 1px solid rgba(255,206,84,0.14);
+    }
+
+    .landscape-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,0.88);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      font-size: 16px;
+    }
+
+    .connect-bar {
+      background: linear-gradient(180deg, rgba(15,53,27,0.68), rgba(10,39,20,0.65));
+      color: #fff;
+      padding: 8px 12px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-top: 1px solid rgba(255,206,84,0.2);
+      border-bottom: 1px solid rgba(255,206,84,0.14);
+    }
+
+    .connect-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin: 6px 0 0;
+      font-size: 12px;
+    }
+
+    .connect-item {
+      background: rgba(255,235,176,0.2);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 12px;
+      padding: 3px 8px;
+    }
+
+    .trump-actions button, .arrange-bar button {
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        min-height: 100dvh;
+      }
+
+      .top-bar {
+        padding: 8px 10px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .game-status {
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 13px;
+      }
+
+      .status-badge {
+        font-size: 12px;
+        padding: 4px 10px;
+      }
+
+      .controls-bar {
+        gap: 8px;
+      }
+
+      .controls-bar button {
+        flex: 1;
+        padding: 8px 6px;
+        font-size: 12px;
+      }
+
+      .message {
+        font-size: 14px;
+        padding: 8px;
+      }
+
+      .game-table {
+        width: calc(100vw - 16px);
+        height: 42vh;
+        min-height: 260px;
+        max-height: 360px;
+        margin: 6px auto;
+        border-width: 6px;
+        border-radius: 24px;
+      }
+
+      .center-zone {
+        width: 70%;
+        min-height: 72px;
+        max-height: 34%;
+      }
+
+      .center-empty {
+        line-height: 56px;
+      }
+
+      .player {
+        min-width: 86px;
+        padding: 8px 10px;
+        border-width: 2px;
+      }
+
+      .player-name {
+        font-size: 12px;
+      }
+
+      .card-count {
+        font-size: 11px;
+      }
+
+      .player.top {
+        top: 6px;
+      }
+
+      .player.bottom {
+        bottom: 6px;
+      }
+
+      .player.left {
+        left: 6px;
+      }
+
+      .player.right {
+        right: 6px;
+      }
+
+      .hand-area {
+        min-height: 84px;
+        max-height: 120px;
+        padding: 8px 6px;
+        white-space: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+
+      .card {
+        width: 40px;
+        height: 60px;
+        line-height: 60px;
+        margin: 2px;
+        font-size: 14px;
+        border-radius: 4px;
+      }
+
+      .card.selected {
+        transform: translateY(-5px);
+      }
+
+      .bottom-controls {
+        padding: 10px 8px;
+        gap: 8px;
+      }
+
+      .bottom-controls button {
+        flex: 1;
+        padding: 9px 6px;
+        font-size: 13px;
+      }
+
+      .score-bar, .trump-bar, .arrange-bar {
+        font-size: 12px;
+        padding: 7px 8px;
+      }
+
+      .connect-bar {
+        font-size: 12px;
+        padding: 7px 8px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .modal-content {
+        width: 96vw;
+        max-height: 80dvh;
+        overflow-y: auto;
+        padding: 18px;
+      }
+    }
+
+    @media (max-width: 900px) and (orientation: landscape) {
+      .game-table {
+        height: 45vh;
+        max-height: none;
+      }
+
+      .hand-area {
+        min-height: 94px;
+        max-height: 132px;
+      }
+
+      .card {
+        width: 44px;
+        height: 66px;
+        line-height: 66px;
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="landscape-mask" v-if="showLandscapeHint">
+      <div style="font-size: 44px; margin-bottom: 10px;">📱↔️</div>
+      <div style="font-weight: bold; margin-bottom: 6px;">建议横屏游玩</div>
+      <div style="opacity: 0.9;">竖屏操作空间较小，请旋转手机以获得更好的发牌与理牌体验。</div>
+    </div>
+
+    <!-- 顶部状态栏 -->
+    <div class="top-bar">
+      <div class="game-status">
+        <span class="status-badge" :class="statusClass">{{ statusText }}</span>
+        <span v-if="isDealing">发牌进度：{{ dealIndex }}/108</span>
+      </div>
+      <div class="controls-bar">
+        <button v-if="!isPaused" class="pause-btn" @click="pause">⏸️ 暂停</button>
+        <button v-else class="resume-btn" @click="resume">▶️ 恢复</button>
+        <button
+          v-if="isAdmin"
+          class="admin-btn"
+          @click="showAdminPanel = true"
+        >⚙️ 管理</button>
+      </div>
+    </div>
+    
+    <!-- 发牌进度 -->
+    <div class="deal-progress" v-if="isDealing">
+      🃏 发牌中... {{ dealIndex }}/108
+    </div>
+
+    <div class="connect-bar">
+      <div>👥 已连接：{{ connectedPlayers.length }}/4</div>
+      <div v-if="connectedPlayers.length > 0" class="connect-list">
+        <span class="connect-item" v-for="p in connectedPlayers" :key="p.playerId">
+          {{ p.nickname }}{{ p.isAdmin ? '👑' : '' }}
+        </span>
+      </div>
+      <div class="controls-bar" v-if="isAdmin">
+        <button class="admin-btn" @click="startGame" :disabled="connectedPlayers.length < 4">开始开局</button>
+        <button class="admin-btn" @click="startDealing" :disabled="connectedPlayers.length < 4 || isDealing">开始发牌</button>
+      </div>
+    </div>
+
+    <div class="score-bar">
+      <span>📊 1队分数：{{ team0Score }}</span>
+      <span v-if="scoreUpdatedBy">（更新：{{ scoreUpdatedBy }}）</span>
+      <span>阶段：{{ phaseText }}</span>
+    </div>
+
+    <div class="trump-bar" v-if="phase === 'trump'">
+      <span>🎴 主花色：{{ trumpSuitText }}</span>
+      <span v-if="trump.holderId">当前持牌：{{ getPlayerNameById(trump.holderId) }}</span>
+      <span v-if="trump.pendingExchange">需还牌 {{ trump.pendingExchange.count }} 张</span>
+      <div class="trump-actions">
+        <button @click="throwTrump" :disabled="selected.length < 2 || trump.lastCards.length > 0">甩牌</button>
+        <button @click="coverTrump" :disabled="selected.length < 2 || !trump.lastCards.length || trump.pendingExchange">顶牌</button>
+        <button @click="coverExchange" :disabled="!canExchangeNow">还牌</button>
+        <button @click="passCover" :disabled="!trump.lastCards.length || trump.pendingExchange">不顶</button>
+      </div>
+    </div>
+    
+    <!-- 消息提示 -->
+    <div class="message">{{ message }}</div>
+    
+    <!-- 游戏桌子 -->
+    <div class="game-table">
+      <div class="center-zone">
+        <div v-if="centerPlays.length === 0" class="center-empty">中央暂无牌面</div>
+        <div v-for="(cp, idx) in centerPlays" :key="idx" class="center-play">
+          <div>{{ getPlayerNameById(cp.playerId) }}</div>
+          <div class="center-cards">
+            <span class="mini-card" v-for="c in cp.cards" :key="c.id">{{ cardText(c) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 北 (队友) -->
+      <div class="player top" :class="{ teammate: true, current: currentPlayerIndex === 0, admin: viewSeats[0]?.isAdmin }">
+        <div class="player-name">{{ viewSeats[0]?.nickname || '等待' }} {{ viewSeats[0]?.isAdmin ? '👑' : '' }}</div>
+        <div class="card-count">🃏 {{ viewHandCounts[0] || 0 }} 张</div>
+      </div>
+      
+      <!-- 东 (对手) -->
+      <div class="player right" :class="{ current: currentPlayerIndex === 1, admin: viewSeats[1]?.isAdmin }">
+        <div class="player-name">{{ viewSeats[1]?.nickname || '等待' }} {{ viewSeats[1]?.isAdmin ? '👑' : '' }}</div>
+        <div class="card-count">🃏 {{ viewHandCounts[1] || 0 }} 张</div>
+      </div>
+      
+      <!-- 南 (自己) -->
+      <div class="player bottom" :class="{ current: currentPlayerIndex === 2, admin: isAdmin }">
+        <div class="player-name">{{ viewSeats[2]?.nickname || nickname }} (你) {{ isAdmin ? '👑' : '' }}</div>
+        <div class="card-count">🃏 {{ viewHandCounts[2] || 0 }} 张</div>
+      </div>
+      
+      <!-- 西 (对手) -->
+      <div class="player left" :class="{ current: currentPlayerIndex === 3, admin: viewSeats[3]?.isAdmin }">
+        <div class="player-name">{{ viewSeats[3]?.nickname || '等待' }} {{ viewSeats[3]?.isAdmin ? '👑' : '' }}</div>
+        <div class="card-count">🃏 {{ viewHandCounts[3] || 0 }} 张</div>
+      </div>
+    </div>
+    
+    <!-- 我的手牌 -->
+    <div class="arrange-bar">
+      <button @click="sortHandDefault">一键理牌</button>
+      <button @click="toggleArrangeMode">{{ arrangeMode ? '完成整理' : '整理模式（拖拽排序）' }}</button>
+      <span v-if="arrangeMode">按住牌并左右拖动可调整顺序</span>
+    </div>
+
+    <div class="hand-area" @pointermove="onArrangePointerMove($event)">
+      <div 
+        v-for="card in myHand" 
+        :key="card.id" 
+        class="card"
+        :class="[
+          { selected: selected.includes(card.id) },
+          { red: isRed(card) },
+          { black: !isRed(card) },
+          { 'arrange-draggable': arrangeMode },
+          { 'arrange-dragging': arrangeDragId === card.id }
+        ]"
+        :data-card-id="card.id"
+        @click="toggleCard(card.id)"
+        @pointerdown="onArrangePointerDown(card.id, $event)"
+        @pointerup="onArrangePointerUp($event)"
+        @pointercancel="onArrangePointerUp($event)"
+        @pointerleave="onArrangePointerUp($event)"
+      >
+        {{ cardText(card) }}
+      </div>
+    </div>
+    
+    <!-- 底部控制 -->
+    <div class="bottom-controls">
+      <button class="play-btn" @click="play" :disabled="!isMyTurn || selected.length === 0 || isPaused">
+        出牌
+      </button>
+      <button class="pass-btn" @click="pass" :disabled="!isMyTurn || isPaused">
+        不要
+      </button>
+    </div>
+    
+    <!-- 游戏结束弹窗 -->
+    <div class="game-over" v-if="gameOver">
+      <div class="game-over-content">
+        <h2>🎉 {{ gameOverMessage }}</h2>
+        <button @click="backToLobby">返回大厅</button>
+      </div>
+    </div>
+    
+    <!-- 管理员面板 -->
+    <div class="modal" v-if="showAdminPanel">
+      <div class="modal-content">
+        <h3>⚙️ 管理员控制</h3>
+
+        <template v-if="isAdmin">
+          <div class="input-group">
+            <label>发牌间隔（毫秒）</label>
+            <input type="number" v-model="dealIntervalInput" min="100" step="100" />
+          </div>
+          <button class="admin-btn" @click="setDealInterval" style="margin-bottom: 15px;">
+            设置发牌间隔
+          </button>
+          
+          <div class="input-group">
+            <label>回退出牌（历史索引）</label>
+            <input type="number" v-model="undoIndex" min="0" />
+          </div>
+          <button class="admin-btn" @click="undoPlay">
+            回退出牌
+          </button>
+
+          <div class="input-group" style="margin-top:12px;">
+            <label>手工设置 1 队分数（可负）</label>
+            <input type="number" v-model.number="team0ScoreInput" />
+          </div>
+          <button class="admin-btn" @click="setScore">
+            更新分数
+          </button>
+
+          <button class="admin-btn" style="margin-top: 12px;" @click="flipCenter">
+            翻牌（清空中央）
+          </button>
+
+          <button class="admin-btn" style="margin-top: 12px; background: #e53935;" @click="endGameByAdmin">
+            结束本局
+          </button>
+        </template>
+        
+        <div class="modal-actions">
+          <button @click="showAdminPanel = false">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+    
+    createApp({
+      data() {
+        return {
+          nickname: '',
+          playerId: null,
+          isAdmin: false,
+          players: [null, null, null, null],
+          connectedPlayers: [],
+          myHand: [],
+          selected: [],
+          handCountsMap: {},
+          currentPlayerIndex: 2,
+          isMyTurn: false,
+          message: '等待游戏开始...',
+          ws: null,
+          gameOver: false,
+          gameOverMessage: '',
+          isPaused: false,
+          isDealing: false,
+          dealIndex: 0,
+          dealIntervalInput: 1000,
+          undoIndex: 0,
+          showAdminPanel: false,
+          phase: 'waiting',
+          centerPlays: [],
+          trump: {
+            suit: null,
+            holderId: null,
+            lastCards: [],
+            pendingExchange: null
+          },
+          currentPlayerId: null,
+          team0Score: 0,
+          scoreUpdatedBy: null,
+          team0ScoreInput: 0,
+          arrangeMode: false,
+          arrangePickIndex: null,
+          arrangeDragId: null,
+          arrangeDragMoved: false,
+          showLandscapeHint: false
+        };
+      },
+      computed: {
+        viewSeats() {
+          const seats = this.players.filter(Boolean);
+          if (seats.length !== 4) return [null, null, null, null];
+          const selfIndex = seats.findIndex((p) => p.playerId === this.playerId);
+          if (selfIndex < 0) return seats;
+          const offset = (2 - selfIndex + 4) % 4;
+          const out = [null, null, null, null];
+          for (let i = 0; i < 4; i++) {
+            out[(i + offset) % 4] = seats[i];
+          }
+          return out;
+        },
+        viewHandCounts() {
+          return this.viewSeats.map((p) => (p ? (this.handCountsMap[p.playerId] || 0) : 0));
+        },
+        statusClass() {
+          if (this.isPaused) return 'status-paused';
+          if (this.isDealing) return 'status-dealing';
+          return 'status-playing';
+        },
+        statusText() {
+          if (this.isPaused) return '⏸️ 已暂停';
+          if (this.isDealing) return '🃏 发牌中';
+          return '🎮 游戏中';
+        },
+        phaseText() {
+          if (this.phase === 'trump') return '甩牌/顶牌';
+          if (this.phase === 'playing') return '出牌';
+          if (this.phase === 'ended') return '已结束';
+          if (this.phase === 'dealing') return '发牌中';
+          return '等待';
+        },
+        trumpSuitText() {
+          const names = ['♠ 黑桃', '♥ 红桃', '♣ 梅花', '♦ 方块'];
+          if (this.trump.suit == null) return '未定';
+          return names[this.trump.suit] || '未定';
+        },
+        canExchangeNow() {
+          return !!this.trump.pendingExchange &&
+            this.trump.pendingExchange.fromPlayerId === this.playerId &&
+            this.selected.length === this.trump.pendingExchange.count;
+        }
+      },
+      mounted() {
+        const raw = localStorage.getItem('nickname') || '';
+        const normalized = String(raw).trim().replace(/[\s\u3000]+/g, '');
+        const allowed = ['玩家1', '玩家2', '玩家3', '玩家4'];
+        if (!allowed.includes(normalized)) {
+          alert('请先在首页选择固定账号（玩家1/玩家2/玩家3/玩家4）再进入游戏。');
+          window.location.href = 'index.html';
+          return;
+        }
+        this.nickname = normalized;
+        this.isAdmin = false;
+        this.updateLandscapeHint();
+        window.addEventListener('resize', this.updateLandscapeHint);
+        window.addEventListener('orientationchange', this.updateLandscapeHint);
+        this.connect();
+      },
+      beforeUnmount() {
+        window.removeEventListener('resize', this.updateLandscapeHint);
+        window.removeEventListener('orientationchange', this.updateLandscapeHint);
+      },
+      methods: {
+        updateLandscapeHint() {
+          const isSmallScreen = window.matchMedia('(max-width: 900px)').matches;
+          const isPortrait = window.matchMedia('(orientation: portrait)').matches;
+          this.showLandscapeHint = isSmallScreen && isPortrait;
+        },
+
+        getWebSocketUrl() {
+          const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+          const host = window.location.hostname || 'localhost';
+          return `${protocol}://${host}:3235`;
+        },
+
+        connect() {
+          this.ws = new WebSocket(this.getWebSocketUrl());
+          
+          this.ws.onopen = () => {
+            console.log('✅ 已连接');
+            this.message = '等待其他玩家...';
+            
+            this.ws.send(JSON.stringify({
+              action: 'join',
+              nickname: this.nickname
+            }));
+          };
+          
+          this.ws.onmessage = (e) => {
+            const msg = JSON.parse(e.data);
+            this.handleMessage(msg);
+          };
+          
+          this.ws.onclose = () => {
+            this.message = '❌ 连接断开';
+          };
+        },
+        
+        handleMessage(msg) {
+          console.log('📨', msg.event);
+          
+          switch (msg.event) {
+            case 'joined':
+              this.playerId = msg.playerId;
+              this.isAdmin = msg.isAdmin;
+              break;
+
+            case 'playersUpdate': {
+              const list = msg.players || [];
+              this.connectedPlayers = list;
+              const self = list.find((p) => p.playerId === this.playerId);
+              if (self) {
+                this.isAdmin = self.isAdmin;
+              }
+              break;
+            }
+
+            case 'stateSync':
+              this.applyState(msg.state);
+              break;
+
+            case 'gameStart':
+              this.message = '🎮 游戏开始！准备发牌...';
+              if (Array.isArray(msg.seats)) {
+                this.players = msg.seats.map((s) => ({
+                  playerId: s.playerId,
+                  nickname: s.nickname,
+                  isAdmin: s.isAdmin
+                }));
+              }
+              this.isMyTurn = false;
+              break;
+              
+            case 'dealingStart':
+              this.isDealing = true;
+              this.dealIndex = 0;
+              this.message = '🃏 开始发牌...';
+              break;
+
+            case 'dealProgress':
+              this.dealIndex = msg.dealIndex || this.dealIndex;
+              if (msg.handCounts) {
+                this.handCountsMap = msg.handCounts;
+              }
+              break;
+
+            case 'trumpPhaseStart':
+              this.message = '🎴 进入甩牌阶段';
+              break;
+              
+            case 'handUpdate':
+              this.myHand = msg.cards.sort((a, b) => b.value - a.value);
+              this.dealIndex = msg.dealIndex;
+              if (msg.dealIndex >= 108) {
+                this.isDealing = false;
+                this.message = '✅ 发牌完成！游戏开始';
+              }
+              break;
+              
+            case 'hand':
+              this.myHand = msg.cards.sort((a, b) => b.value - a.value);
+              break;
+              
+            case 'played':
+              this.message = `${this.getPlayerNameById(msg.playerId)} 出了 ${msg.cards.length} 张牌`;
+              this.handCountsMap = {
+                ...this.handCountsMap,
+                [msg.playerId]: msg.remaining
+              };
+              this.selected = [];
+              break;
+              
+            case 'passed':
+              this.message = `${this.getPlayerNameById(msg.playerId)} 不要`;
+              break;
+              
+            case 'gamePaused':
+              this.isPaused = true;
+              this.message = `⏸️ 游戏已暂停 (${msg.pausedBy})`;
+              break;
+              
+            case 'gameResumed':
+              this.isPaused = false;
+              this.message = '▶️ 游戏已恢复';
+              break;
+              
+            case 'playUndone':
+              this.message = `↩️ 管理员回退了出牌`;
+              break;
+              
+            case 'gameOver':
+              this.gameOver = true;
+              this.gameOverMessage = `${msg.winner.team.join(' & ')} 获胜！`;
+              break;
+
+            case 'gameForceEnded':
+              this.gameOver = true;
+              this.isPaused = false;
+              this.isDealing = false;
+              this.gameOverMessage = `本局已由管理员 ${msg.by} 主动结束`;
+              break;
+
+            case 'error':
+              if (msg.message) {
+                alert(msg.message);
+                if (msg.message.includes('仅支持固定账号登录')) {
+                  window.location.href = 'index.html';
+                }
+              }
+              break;
+          }
+        },
+
+        applyState(state) {
+          if (!state) return;
+          this.phase = state.phase || this.phase;
+          this.centerPlays = state.centerPlays || [];
+          this.currentPlayerId = state.currentPlayerId;
+          this.team0Score = state.team0Score ?? this.team0Score;
+          this.scoreUpdatedBy = state.scoreUpdatedBy || null;
+          this.trump = state.trump || this.trump;
+          if (state.handCounts) {
+            this.handCountsMap = state.handCounts;
+          }
+          this.currentPlayerIndex = this.viewSeats.findIndex((p) => p && p.playerId === this.currentPlayerId);
+          this.isMyTurn = this.currentPlayerId === this.playerId && this.phase === 'playing';
+        },
+
+        getPlayerNameById(pid) {
+          const p = this.players.find((x) => x && x.playerId === pid);
+          return p ? p.nickname : `玩家${pid}`;
+        },
+        
+        toggleCard(id) {
+          if (this.arrangeMode) return;
+          const idx = this.selected.indexOf(id);
+          if (idx >= 0) {
+            this.selected.splice(idx, 1);
+          } else {
+            this.selected.push(id);
+          }
+        },
+        
+        play() {
+          if (this.selected.length === 0) return;
+          this.ws.send(JSON.stringify({
+            action: 'play',
+            cards: this.selected
+          }));
+        },
+
+        throwTrump() {
+          if (this.selected.length < 2) return;
+          this.ws.send(JSON.stringify({ action: 'throwTrump', cards: this.selected }));
+          this.selected = [];
+        },
+
+        coverTrump() {
+          if (this.selected.length < 2) return;
+          this.ws.send(JSON.stringify({ action: 'coverTrump', cards: this.selected }));
+          this.selected = [];
+        },
+
+        coverExchange() {
+          this.ws.send(JSON.stringify({ action: 'coverExchange', cards: this.selected }));
+          this.selected = [];
+        },
+
+        passCover() {
+          this.ws.send(JSON.stringify({ action: 'passCover' }));
+        },
+
+        startGame() {
+          this.ws.send(JSON.stringify({ action: 'startGame' }));
+        },
+
+        startDealing() {
+          this.ws.send(JSON.stringify({ action: 'startDealing' }));
+        },
+        
+        pass() {
+          this.ws.send(JSON.stringify({ action: 'pass' }));
+        },
+        
+        pause() {
+          this.ws.send(JSON.stringify({ action: 'pause' }));
+        },
+        
+        resume() {
+          this.ws.send(JSON.stringify({ action: 'resume' }));
+        },
+        
+        setDealInterval() {
+          this.ws.send(JSON.stringify({
+            action: 'setDealInterval',
+            interval: parseInt(this.dealIntervalInput)
+          }));
+          this.showAdminPanel = false;
+        },
+        
+        undoPlay() {
+          this.ws.send(JSON.stringify({
+            action: 'undoPlay',
+            playIndex: parseInt(this.undoIndex)
+          }));
+          this.showAdminPanel = false;
+        },
+
+        setScore() {
+          this.ws.send(JSON.stringify({
+            action: 'setScore',
+            team0Score: Number(this.team0ScoreInput)
+          }));
+        },
+
+        flipCenter() {
+          this.ws.send(JSON.stringify({ action: 'flipCenter' }));
+        },
+
+        endGameByAdmin() {
+          if (!confirm('确认要结束本局吗？')) return;
+          this.ws.send(JSON.stringify({ action: 'endGame' }));
+          this.showAdminPanel = false;
+        },
+
+        sortHandDefault() {
+          this.myHand = [...this.myHand].sort((a, b) => b.value - a.value);
+        },
+
+        toggleArrangeMode() {
+          this.arrangeMode = !this.arrangeMode;
+          this.arrangePickIndex = null;
+          this.arrangeDragId = null;
+          this.arrangeDragMoved = false;
+        },
+
+        onArrangePointerDown(cardId, e) {
+          if (!this.arrangeMode) return;
+          this.arrangeDragId = cardId;
+          this.arrangeDragMoved = false;
+          if (e.pointerId != null && e.currentTarget?.setPointerCapture) {
+            try { e.currentTarget.setPointerCapture(e.pointerId); } catch (_) {}
+          }
+        },
+
+        onArrangePointerUp() {
+          if (!this.arrangeMode) return;
+          this.arrangeDragId = null;
+          this.arrangeDragMoved = false;
+        },
+
+        onArrangePointerMove(e) {
+          if (!this.arrangeMode || this.arrangeDragId == null) return;
+          const target = document.elementFromPoint(e.clientX, e.clientY);
+          const cardEl = target && target.closest ? target.closest('.card[data-card-id]') : null;
+          if (!cardEl) return;
+          const targetId = Number(cardEl.dataset.cardId);
+          if (!targetId || targetId === this.arrangeDragId) return;
+
+          const from = this.myHand.findIndex((c) => c.id === this.arrangeDragId);
+          const to = this.myHand.findIndex((c) => c.id === targetId);
+          if (from < 0 || to < 0 || from === to) return;
+
+          const item = this.myHand.splice(from, 1)[0];
+          this.myHand.splice(to, 0, item);
+          this.arrangeDragMoved = true;
+        },
+        
+        isRed(card) {
+          return card.suit === 1 || card.suit === 4;
+        },
+        
+        cardText(card) {
+          const suits = ['♠', '♥', '♣', '♦', '🃏'];
+          const ranks = ['','A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+          if (card.suit === 4) return card.rank === 2 ? '大王' : '小王';
+          return suits[card.suit] + ranks[card.rank];
+        },
+        
+        backToLobby() {
+          window.location.href = 'index.html';
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>

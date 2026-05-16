@@ -1,78 +1,42 @@
-# OpenClaw 配置笔记（openclaw.json 说明文档）
-
-本文档由系统维护员维护，用于说明与跟踪 `openclaw.json` 的配置：核心摘要、变更历史、已知问题与待确认事项。配置变更或巡检结论更新时请同步修改此处。
+# OpenClaw 配置笔记
 
 ## 最后更新
-2026-03-19 22:59
+2026-05-15 09:16 (Asia/Shanghai) — 心跳巡检
 
 ## 核心配置摘要
-
-### 默认模型
-| 别名 | 模型 | 用途 |
-|------|------|------|
-| coding | dashscope-coding/qwen3.5-plus | 主模型 |
-| kimi | dashscope-coding/kimi-k2.5 | 备用 |
-| max | dashscope-coding/qwen3-max-2026-01-23 | 备用 |
-| light | dashscope/qwen-turbo | 轻量任务 |
-| plus-paygo | dashscope/qwen-plus | 备用 |
-
-### 启用的 Agent
-| ID | 名称 | 工作区 | 模型 |
-|----|------|--------|------|
-| main | CEO Agent | ~/.openclaw/workspace | dashscope-coding/qwen3.5-plus |
-| sysadmin | 系统维护员 | ~/.openclaw/workspace-sysadmin | dashscope/qwen-turbo |
-
-### 启用的渠道
-| 渠道 | 状态 | 备注 |
-|------|------|------|
-| webchat | ✅ | 控制 UI /leo |
-| whatsapp | ✅ | 心跳通知 |
-
-### 工具策略
-- **Profile:** `coding`
-- **Deny:** `apply_patch` (模型不支持)
-- **Elevated:** 启用
-
-### 关键配置
-- **上下文窗口:** 200K tokens
-- **会话修剪:** cache-ttl 模式，1h TTL
-- **心跳间隔:** 30m (main), 24h (sysadmin)
-- **最大并发:** 10
-
----
+- 默认模型：`guidor/deepseek-v4-flash` + fallback: `deepseek/deepseek-v4-flash`
+- 启用的渠道：feishu, lightclawbot, ddingtalk, wecom, openclaw-qqbot, openclaw-weixin
+- 启用的 Agent：sysadmin, main, strategist, lifehelper, healthadvisor, product-owner, architect, investor, parenting
+- exec 审批：security=full, ask=off（YOLO 模式）
+- 心跳：24h
+- 飞书 blockStreaming：on
 
 ## 变更历史
 
 | 日期 | 变更内容 | 原因 |
 |------|----------|------|
-| 2026-03-19 | 创建 Agent 创建技能 `workspace-sysadmin/skills/agent-creator/` | 标准化 Agent 创建流程，供 sysadmin 自用 |
-| 2026-03-19 | 创建全局技能规范 `~/.openclaw/docs/skill-structure.md` | 统一各 Agent 技能目录结构 |
-| 2026-03-15 | 添加 `apply_patch` 到 deny 列表 | 模型不支持该工具，启动报错 |
-| 2026-03-15 | 创建 sysadmin agent | 系统维护自动化需求 |
+| 2026-05-14 09:10 | **delivery.to 全部修复**：14 个 cron 任务 `delivery.target` → `delivery.to` | 05-13 reset 将 `delivery.to` 改为 `target`，OpenClaw #23322 bug 导致无法识别 |
+| 2026-05-14 09:00 | **心跳巡检**：日志 WARN 72, ERROR 9。Cron delivery.to 缺失。默认模型切 Flash。config-notes 精简至核心条目 | 常规心跳 + 清理 stale 历史 |
+| 2026-05-13 21:07 | **blockStreamingDefault**："off" → "on" | 修复飞书流式输出不生效 |
+| 2026-05-13 21:06 | **飞书流式双开验证通过** | reset 后重建验收 |
+| 2026-05-13 20:43 | **架构师凭证补全**（reset 后唯一缺失） | 独缺 feishu_app_creds |
+| 2026-05-13 14:29 | **sqz v1.0.9 + DeepClaude 部署**；模型临时切 v4-flash | guidor extra_body.thinking 不支持 + Pro 超时 |
+| 2026-05-13 | **openclaw reset 清零重建** | 级联故障+双故障叠加，保留 memory-tdai |
+| 2026-05-11 16:29 | **Feishu blockStreaming 开启**；streamingIntervalSeconds: 3 → 2 | 流式输出体验优化 |
+| 2026-05-11 02:30 | **不支持字段导致 hot-reload 失败** — 全部 cron 投递中断 | agents.defaults.compaction 含 `notifyUser`（当前版本不支持），channel 反注册 |
+| 2026-05-09 12:30 | **所有 Agent 统一 DeepSeek V4 Pro**（guidor 代理） | 公司 Key 成本不计，统一模型提升质量 |
+| 2026-05-01 21:55 | **cron jobs.json 修复** — JSON 文件被损坏（混入非 JSON 文本） | 未知原因文件头混入文本行，Python 脚本清理修复 |
 
----
+## 已知持续问题
+
+| 问题 | 状态 | 影响 |
+|------|------|------|
+| memory-tdai EmbeddingService 不可用 | 持续（无 API key） | 退回关键词搜索，无功能影响 |
+| lightclawbot huashu-nuwa 无 provenance | 持续 | 仅 WARN，不影响功能 |
+| Git 数据同步失败 | 间歇（Token 过期时） | 数据在本地，无丢失风险 |
+| daily-plan / lifehelper-daily-review-reminder 持续失败 | 跟踪中 | 需进一步诊断（可能是 sessionTarget/lifehelper 配置问题） |
 
 ## 待确认事项
-
-- [ ] 日志文件实际位置确认（/tmp/openclaw.log 或 ~/.openclaw/openclaw.log）
-- [ ] 日志轮转策略是否需要配置
-- [ ] 是否需要添加更多监控指标（token 用量、API 调用失败率）
-- [ ] 全局技能目录 `~/.openclaw/skills/` 是否需要预创建
-
----
-
-## 文档索引
-
-| 文档 | 用途 |
-|------|------|
-| `~/.openclaw/docs/skill-structure.md` | 技能存放规范（全局） |
-| `workspace-sysadmin/skills/agent-creator/SKILL.md` | Agent 创建技能（sysadmin 自用） |
-| `docs/config-notes.md` | 本文件：openclaw.json 配置说明 |
-
----
-
-## 已知问题
-
-| 问题 | 状态 | 备注 |
-|------|------|------|
-| `apply_patch` 工具不可用 | ✅ 已修复 | 添加到 deny 列表 |
+- [ ] daily-plan、lifehelper-daily-review-reminder 投递失败根因（非 delivery.to 问题）
+- [ ] b6b81114（lifehelper-mothers-day-followup）已 disable + deleteAfterRun，需确认是否清理
+- [ ] 02:00 log-rotation 检查日志轮转脚本是否实际运行

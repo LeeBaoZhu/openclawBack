@@ -2,6 +2,8 @@
 
 技能（Skills）定义的是工具**如何工作**。本文件用来写**本工作区 / 当前环境**的速查——日志路径、脚本用法、常用命令、环境相关笔记，随使用持续更新。
 
+巡检顺序与报告模板见 **`AGENTS.md`**；`openclaw.json` 摘要见 **`docs/config-notes.md`**。
+
 ## 这里写什么
 
 - 日志文件路径及备用路径（含本机实际位置）
@@ -45,6 +47,10 @@
 - `openclaw config show` — 查看当前配置
 - `openclaw gateway status` / `openclaw gateway restart` — Gateway 状态与重启
 - `openclaw sandbox explain` — 沙盒/工具策略诊断
+
+### 用户约定 ⭐
+
+- **「提交本地数据」** → 执行：`cd /root/.openclaw && git add . && git commit && git push`
 
 ### 工具使用注意 ⭐
 

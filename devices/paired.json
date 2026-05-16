@@ -3,8 +3,8 @@
     "deviceId": "a54242d7c02e902a41b72d0721bdff42bc436a9e45c5b2f9e5c012a0beef5049",
     "publicKey": "-U_PZedMEvzf_hQG0Zr6h7tUoajmmsmaQyu3DbS39fM",
     "platform": "win32",
-    "clientId": "cli",
-    "clientMode": "cli",
+    "clientId": "gateway-client",
+    "clientMode": "backend",
     "role": "operator",
     "roles": [
       "operator"
@@ -38,7 +38,8 @@
       }
     },
     "createdAtMs": 1773157659415,
-    "approvedAtMs": 1773157659415
+    "approvedAtMs": 1773157659415,
+    "displayName": "gateway:health"
   },
   "7a4b6bb3f014eccbf7eab7e337c8739202a80180899cb2202d96a879098c7069": {
     "deviceId": "7a4b6bb3f014eccbf7eab7e337c8739202a80180899cb2202d96a879098c7069",

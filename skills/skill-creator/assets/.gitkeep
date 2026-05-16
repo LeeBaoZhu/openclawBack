@@ -1,0 +1,18 @@
+# Assets Directory
+
+Place files here that will be used in the final output Codex produces.
+
+## When to use
+
+- Templates (HTML, PPT, etc.)
+- Images, icons, logos
+- Boilerplate code
+- Fonts and typography
+- Sample documents
+
+## Best practices
+
+1. Only include files that are actually needed
+2. Keep file sizes reasonable
+3. Use clear, descriptive filenames
+4. Organize into subdirectories if needed

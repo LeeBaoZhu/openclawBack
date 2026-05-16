@@ -1,0 +1,21 @@
+{
+  "name": "card-game-2v2",
+  "version": "1.0.0",
+  "description": "2v2 棋牌游戏 - 双扣",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
+  },
+  "keywords": ["card-game", "2v2", "websocket"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.11.0",
+    "ws": "^8.14.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

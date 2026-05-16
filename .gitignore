@@ -1,0 +1,91 @@
+# 敏感信息 - 绝对不要上传
+credentials/
+*.key
+*.pem
+*secret*
+*.env
+agents/*/agent/auth-profiles.json
+
+# 配置备份（可能含 API Key）
+openclaw.json.bak*
+openclaw.json.last-good
+
+# 日志文件
+*.log
+logs/
+tmp/
+
+# 大型文件
+*.zip
+*.tar.gz
+*.bak
+
+# 编辑器文件
+.vscode/
+.idea/
+.claude/
+*.swp
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 运行时 / 自动生成
+plugins/
+tasks/
+flows/
+sandboxes/
+cache/
+.state/
+npm/
+plugin-skills/
+gateway-*.json
+update-check.json
+subagents/
+
+# 会话与对话记录
+agents/*/sessions/
+sessions/
+
+# 设备配对
+devices/
+
+# 安装的插件扩展
+extensions/
+node_modules/
+agents/
+logs/
+
+# 数据库
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.db
+*.db-shm
+*.db-wal
+
+# 媒体 inbound
+media/
+
+# cron 运行记录
+cron/runs/
+
+# 记忆向量库备份
+memory-tdai/.backup/
+memory-tdai/vectors.db*
+
+# 渠道状态
+feishu/dedup/
+state/
+
+# ClawHub / skill 安装缓存
+workspace/.clawhub/
+workspace/.openclaw/
+workspace/skills/
+
+# 二进制
+*.so
+*.dll
+*.dylib
+

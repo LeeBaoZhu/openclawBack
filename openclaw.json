@@ -1,11 +1,11 @@
 {
   "meta": {
-    "lastTouchedVersion": "2026.3.13",
-    "lastTouchedAt": "2026-03-15T07:31:31.831Z"
+    "lastTouchedVersion": "2026.5.12",
+    "lastTouchedAt": "2026-05-16T02:10:40.558Z"
   },
   "wizard": {
-    "lastRunAt": "2026-03-15T07:31:31.352Z",
-    "lastRunVersion": "2026.3.13",
+    "lastRunAt": "2026-05-16T01:06:19.367Z",
+    "lastRunVersion": "2026.5.12",
     "lastRunCommand": "doctor",
     "lastRunMode": "local"
   },
@@ -38,192 +38,70 @@
     }
   },
   "models": {
+    "mode": "merge",
     "providers": {
-      "dashscope": {
-        "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-        "apiKey": "sk-4997dcc383004acba9e3998a58d1e9e2",
+      "guidor": {
+        "baseUrl": "https://guidor.vip/v1",
+        "apiKey": "sk-hm6mtGqdwnL1TjKV12J3rJCoUXnA2AeTjnbfVm3VJQev5Vdq",
         "api": "openai-completions",
         "models": [
           {
-            "id": "qwen3-tts-vd-2026-01-26",
-            "name": "Qwen3 TTS VD (PayGo)",
+            "id": "deepseek-v4-flash",
+            "name": "DeepSeek V4 Flash (via Guidor)",
             "api": "openai-completions",
             "reasoning": false,
             "input": [
               "text"
             ],
             "cost": {
-              "input": 0,
-              "output": 0,
+              "input": 0.002,
+              "output": 0.008,
               "cacheRead": 0,
               "cacheWrite": 0
             },
-            "contextWindow": 32768,
-            "maxTokens": 4096
+            "contextWindow": 64000,
+            "maxTokens": 8192
           },
           {
-            "id": "qwen-image-2.0-pro",
-            "name": "Qwen Image 2.0 Pro (PayGo)",
+            "id": "deepseek-v4-pro",
+            "name": "DeepSeek V4 Pro (via Guidor)",
             "api": "openai-completions",
             "reasoning": false,
             "input": [
               "text"
             ],
             "cost": {
-              "input": 0,
-              "output": 0,
+              "input": 0.004,
+              "output": 0.016,
               "cacheRead": 0,
               "cacheWrite": 0
             },
-            "contextWindow": 8192,
-            "maxTokens": 4096
+            "contextWindow": 64000,
+            "maxTokens": 8192
           }
         ]
       },
-      "dashscope-coding": {
-        "baseUrl": "https://coding.dashscope.aliyuncs.com/v1",
-        "apiKey": "sk-sp-bbd3329721c04a4a91dff7e233d28ae5",
+      "guidor-claude": {
+        "baseUrl": "https://guidor.vip/v1",
+        "apiKey": "sk-hUS8nyO5rsNZgcUeGbYp1D6Ar8OnVwYlq64AfpczGZGFLpwq",
         "api": "openai-completions",
         "models": [
           {
-            "id": "qwen3.5-plus",
-            "name": "Qwen3.5 Plus (Coding Plan)",
-            "api": "openai-completions",
-            "reasoning": false,
-            "input": [
-              "text",
-              "image"
-            ],
-            "cost": {
-              "input": 0,
-              "output": 0,
-              "cacheRead": 0,
-              "cacheWrite": 0
-            },
-            "contextWindow": 1000000,
-            "maxTokens": 65536
-          },
-          {
-            "id": "qwen3-max-2026-01-23",
-            "name": "Qwen3 Max (Coding Plan)",
+            "id": "claude-sonnet-4-6",
+            "name": "Claude Sonnet 4.6 (via Guidor Claude)",
             "api": "openai-completions",
             "reasoning": false,
             "input": [
               "text"
             ],
             "cost": {
-              "input": 0,
-              "output": 0,
-              "cacheRead": 0,
-              "cacheWrite": 0
+              "input": 0.003,
+              "output": 0.015,
+              "cacheRead": 0.0003,
+              "cacheWrite": 0.003
             },
-            "contextWindow": 262144,
-            "maxTokens": 65536
-          },
-          {
-            "id": "qwen3-coder-next",
-            "name": "Qwen3 Coder Next (Coding Plan)",
-            "api": "openai-completions",
-            "reasoning": false,
-            "input": [
-              "text",
-              "image"
-            ],
-            "cost": {
-              "input": 0,
-              "output": 0,
-              "cacheRead": 0,
-              "cacheWrite": 0
-            },
-            "contextWindow": 262144,
-            "maxTokens": 65536
-          },
-          {
-            "id": "qwen3-coder-plus",
-            "name": "Qwen3 Coder Plus (Coding Plan)",
-            "api": "openai-completions",
-            "reasoning": false,
-            "input": [
-              "text",
-              "image"
-            ],
-            "cost": {
-              "input": 0,
-              "output": 0,
-              "cacheRead": 0,
-              "cacheWrite": 0
-            },
-            "contextWindow": 262144,
-            "maxTokens": 65536
-          },
-          {
-            "id": "glm-5",
-            "name": "GLM-5 (Coding Plan)",
-            "api": "openai-completions",
-            "reasoning": true,
-            "input": [
-              "text"
-            ],
-            "cost": {
-              "input": 0,
-              "output": 0,
-              "cacheRead": 0,
-              "cacheWrite": 0
-            },
-            "contextWindow": 262144,
-            "maxTokens": 65536
-          },
-          {
-            "id": "glm-4.7",
-            "name": "GLM-4.7 (Coding Plan)",
-            "api": "openai-completions",
-            "reasoning": true,
-            "input": [
-              "text"
-            ],
-            "cost": {
-              "input": 0,
-              "output": 0,
-              "cacheRead": 0,
-              "cacheWrite": 0
-            },
-            "contextWindow": 262144,
-            "maxTokens": 32768
-          },
-          {
-            "id": "kimi-k2.5",
-            "name": "Kimi K2.5 (Coding Plan)",
-            "api": "openai-completions",
-            "reasoning": false,
-            "input": [
-              "text",
-              "image"
-            ],
-            "cost": {
-              "input": 0,
-              "output": 0,
-              "cacheRead": 0,
-              "cacheWrite": 0
-            },
-            "contextWindow": 262144,
-            "maxTokens": 32768
-          },
-          {
-            "id": "MiniMax-M2.5",
-            "name": "MiniMax M2.5 (Coding Plan)",
-            "api": "openai-completions",
-            "reasoning": false,
-            "input": [
-              "text"
-            ],
-            "cost": {
-              "input": 0,
-              "output": 0,
-              "cacheRead": 0,
-              "cacheWrite": 0
-            },
-            "contextWindow": 204800,
-            "maxTokens": 131072
+            "contextWindow": 200000,
+            "maxTokens": 8192
           }
         ]
       }
@@ -232,55 +110,29 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "dashscope-coding/qwen3.5-plus",
+        "primary": "guidor/deepseek-v4-flash",
         "fallbacks": [
-          "dashscope-coding/qwen3-coder-next",
-          "dashscope-coding/kimi-k2.5",
-          "dashscope-coding/glm-5"
-        ]
-      },
-      "imageModel": {
-        "primary": "dashscope/qwen-image-2.0-pro",
-        "fallbacks": []
-      },
-      "pdfModel": {
-        "primary": "dashscope-coding/qwen3.5-plus",
-        "fallbacks": [
-          "dashscope-coding/kimi-k2.5"
+          "guidor/deepseek-v4-pro"
         ]
       },
       "pdfMaxBytesMb": 10,
       "pdfMaxPages": 20,
       "models": {
-        "dashscope-coding/qwen3.5-plus": {
-          "alias": "coding"
+        "guidor/deepseek-v4-pro": {
+          "alias": "deepseek-v4-pro",
+          "params": {
+            "extra_body": {
+              "thinking": {
+                "type": "disabled"
+              }
+            }
+          }
         },
-        "dashscope-coding/qwen3-coder-next": {
-          "alias": "coder-next"
+        "guidor/deepseek-v4-flash": {
+          "alias": "deepseek-v4-flash"
         },
-        "dashscope-coding/qwen3-coder-plus": {
-          "alias": "coder-plus"
-        },
-        "dashscope-coding/qwen3-max-2026-01-23": {
-          "alias": "max"
-        },
-        "dashscope-coding/glm-5": {
-          "alias": "glm5"
-        },
-        "dashscope-coding/glm-4.7": {
-          "alias": "glm4"
-        },
-        "dashscope-coding/kimi-k2.5": {
-          "alias": "kimi"
-        },
-        "dashscope-coding/MiniMax-M2.5": {
-          "alias": "minimax"
-        },
-        "dashscope/qwen3-tts-vd-2026-01-26": {
-          "alias": "tts"
-        },
-        "dashscope/qwen-image-2.0-pro": {
-          "alias": "draw"
+        "guidor-claude/claude-sonnet-4-6": {
+          "alias": "claude-sonnet"
         }
       },
       "workspace": "~/.openclaw/workspace",
@@ -321,7 +173,7 @@
           "Session Startup",
           "Red Lines"
         ],
-        "model": "dashscope/qwen-turbo",
+        "model": "guidor/deepseek-v4-flash",
         "memoryFlush": {
           "enabled": true,
           "softThresholdTokens": 6000,
@@ -352,7 +204,7 @@
       "typingMode": "instant",
       "heartbeat": {
         "every": "30m",
-        "model": "dashscope/qwen-turbo",
+        "model": "guidor/deepseek-v4-flash",
         "session": "main",
         "includeReasoning": false,
         "target": "none",
@@ -375,11 +227,9 @@
         "name": "CEO Agent",
         "workspace": "~/.openclaw/workspace",
         "model": {
-          "primary": "dashscope-coding/qwen3.5-plus",
+          "primary": "guidor/deepseek-v4-pro",
           "fallbacks": [
-            "dashscope-coding/qwen3-coder-next",
-            "dashscope-coding/glm-5",
-            "dashscope-coding/kimi-k2.5"
+            "guidor/deepseek-v4-flash"
           ]
         },
         "identity": {
@@ -437,10 +287,9 @@
         "name": "系统维护员",
         "workspace": "~/.openclaw/workspace-sysadmin",
         "model": {
-          "primary": "dashscope-coding/qwen3.5-plus",
+          "primary": "guidor/deepseek-v4-pro",
           "fallbacks": [
-            "dashscope-coding/qwen3-coder-plus",
-            "dashscope-coding/glm-4.7"
+            "guidor/deepseek-v4-flash"
           ]
         },
         "identity": {
@@ -451,7 +300,7 @@
         },
         "heartbeat": {
           "every": "24h",
-          "model": "dashscope-coding/qwen3.5-plus",
+          "model": "guidor/deepseek-v4-flash",
           "session": "sysadmin",
           "prompt": "检查 OpenClaw 系统状态：1. 读取 ~/.openclaw/openclaw.json 配置 2. 查看系统日志中的 warning/error/fatal 3. 生成维护报告 4. 更新配置维护笔记",
           "to": "+8618186144326",
@@ -490,10 +339,9 @@
         "name": "战略规划师",
         "workspace": "~/.openclaw/workspace-strategist",
         "model": {
-          "primary": "dashscope-coding/glm-5",
+          "primary": "guidor/deepseek-v4-pro",
           "fallbacks": [
-            "dashscope-coding/qwen3.5-plus",
-            "dashscope-coding/qwen3-max-2026-01-23"
+            "guidor/deepseek-v4-flash"
           ]
         },
         "identity": {
@@ -504,7 +352,7 @@
         },
         "heartbeat": {
           "every": "7d",
-          "model": "dashscope-coding/glm-5",
+          "model": "guidor/deepseek-v4-flash",
           "session": "strategist",
           "prompt": "检查战略进展：1. 读取当前战略文档和 OKR 2. 查看近期复盘记录 3. 提醒用户进行周/月复盘 4. 生成进展报告",
           "to": "+8618186144326",
@@ -543,10 +391,9 @@
         "name": "生活助理",
         "workspace": "~/.openclaw/workspace-lifehelper",
         "model": {
-          "primary": "dashscope-coding/qwen3.5-plus",
+          "primary": "guidor/deepseek-v4-pro",
           "fallbacks": [
-            "dashscope-coding/glm-5",
-            "dashscope-coding/kimi-k2.5"
+            "guidor/deepseek-v4-flash"
           ]
         },
         "identity": {
@@ -557,7 +404,7 @@
         },
         "heartbeat": {
           "every": "7d",
-          "model": "dashscope-coding/qwen3.5-plus",
+          "model": "guidor/deepseek-v4-flash",
           "session": "lifehelper",
           "prompt": "生活趋势更新：1. 搜索最新生活资讯和趋势 2. 更新用户偏好设置 3. 提供季节性生活建议 4. 记录用户生活习惯变化",
           "to": "+8618186144326",
@@ -596,10 +443,9 @@
         "name": "健康顾问",
         "workspace": "~/.openclaw/workspace-healthadvisor",
         "model": {
-          "primary": "dashscope-coding/glm-5",
+          "primary": "guidor/deepseek-v4-pro",
           "fallbacks": [
-            "dashscope-coding/qwen3.5-plus",
-            "dashscope-coding/kimi-k2.5"
+            "guidor/deepseek-v4-flash"
           ]
         },
         "identity": {
@@ -610,7 +456,7 @@
         },
         "heartbeat": {
           "every": "7d",
-          "model": "dashscope-coding/glm-5",
+          "model": "guidor/deepseek-v4-flash",
           "session": "healthadvisor",
           "prompt": "健康追踪：1. 查看用户健康记录和进展 2. 更新健康目标 3. 提供季节性健康建议 4. 追踪健康习惯执行情况",
           "to": "+8618186144326",
@@ -641,6 +487,191 @@
             "nodes.camera.stream",
             "nodes.mic.record",
             "nodes.speaker.play"
+          ]
+        }
+      },
+      {
+        "id": "product-owner",
+        "name": "产品负责人",
+        "workspace": "~/.openclaw/workspace-product-owner",
+        "model": {
+          "primary": "guidor/deepseek-v4-pro",
+          "fallbacks": [
+            "deepseek/deepseek-v4-flash"
+          ]
+        },
+        "heartbeat": {
+          "every": "7d",
+          "model": "guidor/deepseek-v4-flash",
+          "session": "product-owner",
+          "directPolicy": "allow",
+          "to": "feishu:ou_bd0bb7c1d6a89633ec6a14ec8c04ef61",
+          "prompt": "检查产品需求池和路线图进展，与 Architect 同步。无异常回复 HEARTBEAT_OK。",
+          "lightContext": true
+        },
+        "identity": {
+          "name": "ProductOwner",
+          "theme": "product strategy and requirements",
+          "emoji": "📌",
+          "avatar": "avatar/ProductOwner.png"
+        },
+        "groupChat": {
+          "mentionPatterns": [
+            "@产品负责人",
+            "@ProductOwner",
+            "@PO"
+          ]
+        },
+        "tools": {
+          "profile": "full",
+          "elevated": {
+            "enabled": true,
+            "allowFrom": {
+              "webchat": [
+                "openclaw-control-ui"
+              ],
+              "feishu": [
+                "ou_543d6577cd3ad27f748e5e8913838a1b",
+                "ou_1f6a2206fbf18db40dd59acff15b2841",
+                "ou_bd0bb7c1d6a89633ec6a14ec8c04ef61"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "architect",
+        "name": "架构师",
+        "workspace": "~/.openclaw/workspace-architect",
+        "model": {
+          "primary": "guidor/deepseek-v4-pro",
+          "fallbacks": [
+            "deepseek/deepseek-v4-flash"
+          ]
+        },
+        "heartbeat": {
+          "every": "7d",
+          "model": "guidor/deepseek-v4-flash",
+          "session": "architect",
+          "directPolicy": "allow",
+          "to": "feishu:ou_bd0bb7c1d6a89633ec6a14ec8c04ef61",
+          "prompt": "检查技术架构和系统状态，与 ProductOwner 同步。无异常回复 HEARTBEAT_OK。",
+          "lightContext": true
+        },
+        "identity": {
+          "name": "Architect",
+          "theme": "technical architecture and design",
+          "emoji": "🏗️",
+          "avatar": "avatar/Architect.png"
+        },
+        "groupChat": {
+          "mentionPatterns": [
+            "@架构师",
+            "@Architect",
+            "@Arch"
+          ]
+        },
+        "tools": {
+          "profile": "full",
+          "elevated": {
+            "enabled": true,
+            "allowFrom": {
+              "webchat": [
+                "openclaw-control-ui"
+              ],
+              "feishu": [
+                "ou_543d6577cd3ad27f748e5e8913838a1b",
+                "ou_1f6a2206fbf18db40dd59acff15b2841",
+                "ou_bd0bb7c1d6a89633ec6a14ec8c04ef61",
+                "ou_c6acb488a489dbcefc955a4a1c216bd0"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "parenting",
+        "name": "育儿专家",
+        "workspace": "~/.openclaw/workspace-parenting",
+        "model": {
+          "primary": "guidor/deepseek-v4-pro",
+          "fallbacks": [
+            "deepseek/deepseek-v4-flash"
+          ]
+        },
+        "identity": {
+          "name": "Parenting",
+          "theme": "parenting advisor and child development expert",
+          "emoji": "🍼",
+          "avatar": "avatar/Parenting.png"
+        },
+        "groupChat": {
+          "mentionPatterns": [
+            "@育儿专家",
+            "@育儿",
+            "@Parenting"
+          ]
+        },
+        "tools": {
+          "profile": "coding",
+          "elevated": {
+            "enabled": true,
+            "allowFrom": {
+              "webchat": [
+                "openclaw-control-ui"
+              ],
+              "feishu": [
+                "ou_543d6577cd3ad27f748e5e8913838a1b",
+                "ou_bd0bb7c1d6a89633ec6a14ec8c04ef61",
+                "ou_fb2e7f148b502e7981c11e9c0f2cace5"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": "investor",
+        "name": "投资顾问",
+        "workspace": "~/.openclaw/workspace-investor",
+        "model": {
+          "primary": "guidor/deepseek-v4-pro",
+          "fallbacks": [
+            "deepseek/deepseek-v4-flash"
+          ]
+        },
+        "identity": {
+          "name": "Investor",
+          "theme": "investment analysis and decision support",
+          "emoji": "📈",
+          "avatar": "avatar/Investor.png"
+        },
+        "groupChat": {
+          "mentionPatterns": [
+            "@投资顾问",
+            "@Investor"
+          ]
+        },
+        "tools": {
+          "profile": "coding",
+          "allow": [
+            "read",
+            "write",
+            "edit",
+            "process",
+            "session_status",
+            "memory_search",
+            "memory_get",
+            "web_search",
+            "tavily_search",
+            "web_fetch",
+            "browser",
+            "message"
+          ],
+          "deny": [
+            "apply_patch",
+            "canvas",
+            "exec",
+            "sessions_send"
           ]
         }
       }
@@ -796,11 +827,6 @@
       }
     }
   },
-  "canvasHost": {
-    "enabled": true,
-    "root": "~/.openclaw/workspace/canvas",
-    "liveReload": true
-  },
   "gateway": {
     "port": 12328,
     "mode": "local",
@@ -808,11 +834,12 @@
     "controlUi": {
       "enabled": true,
       "basePath": "/leo",
-      "allowInsecureAuth": true
+      "allowInsecureAuth": true,
+      "dangerouslyDisableDeviceAuth": true
     },
     "auth": {
-      "mode": "token",
-      "token": "7d3669d2a28f94bc8a45dbbf6aa43aa611380b3367660175"
+      "mode": "none",
+      "token": "b73df9d5ec58ce4e007937a12bbb13d6f0da8385ff7c03a9"
     },
     "tailscale": {
       "mode": "off",
@@ -841,46 +868,176 @@
     "entries": {
       "tavily-search": {
         "apiKey": "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"
+      },
+      "1password": {
+        "enabled": false
+      },
+      "apple-notes": {
+        "enabled": false
+      },
+      "apple-reminders": {
+        "enabled": false
+      },
+      "bear-notes": {
+        "enabled": false
+      },
+      "blogwatcher": {
+        "enabled": false
+      },
+      "blucli": {
+        "enabled": false
+      },
+      "camsnap": {
+        "enabled": false
+      },
+      "clawhub": {
+        "enabled": false
+      },
+      "coding-agent": {
+        "enabled": false
+      },
+      "discord": {
+        "enabled": false
+      },
+      "eightctl": {
+        "enabled": false
+      },
+      "gemini": {
+        "enabled": false
+      },
+      "gh-issues": {
+        "enabled": false
+      },
+      "gifgrep": {
+        "enabled": false
+      },
+      "gog": {
+        "enabled": false
+      },
+      "goplaces": {
+        "enabled": false
+      },
+      "himalaya": {
+        "enabled": false
+      },
+      "imsg": {
+        "enabled": false
+      },
+      "mcporter": {
+        "enabled": false
+      },
+      "model-usage": {
+        "enabled": false
+      },
+      "nano-pdf": {
+        "enabled": false
+      },
+      "notion": {
+        "enabled": false
+      },
+      "obsidian": {
+        "enabled": false
+      },
+      "openai-whisper": {
+        "enabled": false
+      },
+      "openai-whisper-api": {
+        "enabled": false
+      },
+      "openhue": {
+        "enabled": false
+      },
+      "oracle": {
+        "enabled": false
+      },
+      "ordercli": {
+        "enabled": false
+      },
+      "peekaboo": {
+        "enabled": false
+      },
+      "sag": {
+        "enabled": false
+      },
+      "session-logs": {
+        "enabled": false
+      },
+      "sherpa-onnx-tts": {
+        "enabled": false
+      },
+      "slack": {
+        "enabled": false
+      },
+      "songsee": {
+        "enabled": false
+      },
+      "sonoscli": {
+        "enabled": false
+      },
+      "spotify-player": {
+        "enabled": false
+      },
+      "summarize": {
+        "enabled": false
+      },
+      "things-mac": {
+        "enabled": false
+      },
+      "tmux": {
+        "enabled": false
+      },
+      "trello": {
+        "enabled": false
+      },
+      "video-frames": {
+        "enabled": false
+      },
+      "voice-call": {
+        "enabled": false
+      },
+      "wacli": {
+        "enabled": false
+      },
+      "xurl": {
+        "enabled": false
       }
     }
   },
   "plugins": {
-    "allow": [
-      "openclaw-tavily"
-    ],
     "entries": {
-      "qwen-portal-auth": {
-        "enabled": true
-      },
-      "openclaw-tavily": {
+      "tavily": {
         "enabled": true,
         "config": {
-          "apiKey": "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"
+          "webSearch": {
+            "apiKey": "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"
+          }
         }
-      }
-    },
-    "installs": {
-      "openclaw-tavily": {
-        "source": "npm",
-        "spec": "openclaw-tavily",
-        "installPath": "C:\\Users\\28964\\.openclaw\\extensions\\openclaw-tavily",
-        "version": "0.2.1",
-        "resolvedName": "openclaw-tavily",
-        "resolvedVersion": "0.2.1",
-        "resolvedSpec": "openclaw-tavily@0.2.1",
-        "integrity": "sha512-Y/cYTiKWGjWm8TF0/0DGyB80Kuke1oJKEPcFvjmHutXSZSx42RmMqZ3I6kMz12hw1eoxJwQ8a0EJQAvq45KciQ==",
-        "shasum": "544d324879914108c50cfd801d7cff704069970d",
-        "resolvedAt": "2026-03-14T14:36:50.232Z",
-        "installedAt": "2026-03-14T14:36:54.025Z"
+      },
+      "canvas": {
+        "enabled": true,
+        "config": {
+          "host": {
+            "enabled": true,
+            "root": "~/.openclaw/workspace/canvas",
+            "liveReload": true
+          }
+        }
+      },
+      "qwen": {
+        "enabled": true
+      },
+      "browser": {
+        "enabled": true
       }
     }
   },
   "bindings": [
     {
       "agentId": "main",
-      "match": { "channel": "webchat",
-    "accountId": "openclaw-control-ui" }
-      
+      "match": {
+        "channel": "webchat",
+        "accountId": "openclaw-control-ui"
+      }
     }
   ]
 }

@@ -1,0 +1,50 @@
+{
+  "_comment": "投递编排单一真相源。所有 Agent→delivery 映射的权威定义。jobs.json 中的 delivery 配置应与本文件一致。",
+  "version": 1,
+  "updated": "2026-05-15T09:15:00+08:00",
+  "defaults": {
+    "channel": "feishu",
+    "mode": "announce"
+  },
+  "agents": {
+    "sysadmin": {
+      "app_id": "cli_a9340b99e0389bde",
+      "to": "user:ou_bd0bb7c1d6a89633ec6a14ec8c04ef61"
+    },
+    "main": {
+      "app_id": "cli_a937d2339678dcc5",
+      "to": "user:ou_543d6577cd3ad27f748e5e8913838a1b"
+    },
+    "strategist": {
+      "app_id": "cli_a93405978578dbdb",
+      "to": "user:ou_72de9e52b705b59bcaaa61a679c92d46"
+    },
+    "lifehelper": {
+      "app_id": "cli_a934061d57f85bd7",
+      "to": "user:ou_79fa84f314603ff9d7b6ef944e5d3c8c"
+    },
+    "healthadvisor": {
+      "app_id": "cli_a9371dd4d078dbcb",
+      "to": "user:ou_fb2e7f148b502e7981c11e9c0f2cace5"
+    },
+    "product-owner": {
+      "app_id": "cli_a94e198977f95bc3",
+      "to": "user:ou_1f6a2206fbf18db40dd59acff15b2841"
+    },
+    "architect": {
+      "app_id": "cli_a94e1aa3f6b89bc2",
+      "to": "user:ou_c6acb488a489dbcefc955a4a1c216bd0"
+    },
+    "parenting": {
+      "app_id": "cli_a94e1aa3f6b89bc2",
+      "to": "user:ou_2e077077145f02770648a4c4cdd822a2",
+      "_note": "使用 architect 的 app，独立 open_id"
+    },
+    "investor": {
+      "app_id": "cli_a94e1aa3f6b89bc2",
+      "to": "user:ou_4efd035b57093ee5e476e0542ee42edb",
+      "_note": "使用 architect 的 app，独立 open_id"
+    }
+  },
+  "field_name_note": "OpenClaw cron 系统使用 delivery.to（非 delivery.target）。GitHub issue #23322 确认此 bug。修改时务必使用 'to' 字段。"
+}

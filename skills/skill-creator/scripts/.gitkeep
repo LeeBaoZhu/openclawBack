@@ -1,0 +1,21 @@
+# Scripts Directory
+
+Place executable code (Python/Bash/etc.) here for tasks that require deterministic reliability.
+
+## When to use
+
+- When the same code is being rewritten repeatedly
+- When deterministic reliability is needed
+- When you want to save tokens by not loading code into context
+
+## Examples
+
+- `rotate_pdf.py` - PDF rotation utility
+- `process_data.sh` - Data processing script
+
+## Best practices
+
+1. Keep scripts focused on a single task
+2. Include clear usage instructions in comments
+3. Test scripts before committing
+4. Use parameters for flexibility

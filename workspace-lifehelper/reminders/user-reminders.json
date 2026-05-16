@@ -1,0 +1,15 @@
+{
+  "userId": "ou_79fa84f314603ff9d7b6ef944e5d3c8c",
+  "channel": "feishu",
+  "reminders": [
+    {
+      "id": "daily-task-review-22",
+      "name": "每日任务回顾提醒",
+      "schedule": "0 22 * * *",
+      "tz": "Asia/Shanghai",
+      "message": "老板，晚上10点啦！来回顾一下今天的任务完成情况吧~\n\n回复「完成 1」或「task-xxx completed」标记任务完成。",
+      "createdAt": "2026-03-24T15:55:00+08:00",
+      "status": "pending_setup"
+    }
+  ]
+}

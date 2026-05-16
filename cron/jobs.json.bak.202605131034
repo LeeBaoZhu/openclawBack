@@ -1,0 +1,512 @@
+{
+  "version": 1,
+  "jobs": [
+    {
+      "id": "sysadmin-log-rotation",
+      "name": "系统日志轮转",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 2 * * *"
+      },
+      "agentId": "sysadmin",
+      "session": "sysadmin",
+      "enabled": true,
+      "createdAt": "2026-03-27T08:40:00+08:00",
+      "updatedAt": "2026-03-27T08:40:00+08:00",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "凌晨 2:00 自动执行日志轮转。请执行：\n1. 运行日志轮转脚本：bash ~/.openclaw/scripts/rotate-logs.sh\n2. 检查执行结果\n3. 成功：记录到 memory；失败：通过 feishu 通知用户"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce",
+        "channel": "feishu",
+        "to": "user:ou_bd0bb7c1d6a89633ec6a14ec8c04ef61"
+      },
+      "state": {
+        "nextRunAtMs": 1778695200000,
+        "lastRunAtMs": 1778608800004,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 26942,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      },
+      "updatedAtMs": 1778608826946
+    },
+    {
+      "id": "sysadmin-daily-log-check",
+      "name": "系统日志每日巡检",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 0 * * *"
+      },
+      "agentId": "sysadmin",
+      "session": "sysadmin",
+      "enabled": true,
+      "createdAt": "2026-03-25T08:26:00+08:00",
+      "updatedAt": "2026-03-25T08:26:00+08:00",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "凌晨 0:00 自动巡检。请执行：\n1. 检查过去 24h 系统日志中的 warning/error/fatal\n2. 检查 cron/jobs.json 中所有任务的 lastRunStatus，发现 error 立即上报\n3. 检查配置变更（对比上次记录）\n4. 生成维护报告（无论有无异常都要发送），通过 feishu 通知用户"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce",
+        "channel": "feishu",
+        "to": "user:ou_bd0bb7c1d6a89633ec6a14ec8c04ef61"
+      },
+      "state": {
+        "nextRunAtMs": 1778688000000,
+        "lastRunAtMs": 1778601600011,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 378956,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      },
+      "updatedAtMs": 1778601978967
+    },
+    {
+      "id": "sysadmin-daily-git-push",
+      "name": "每日 Git 数据同步",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 1 * * *"
+      },
+      "agentId": "sysadmin",
+      "session": "sysadmin",
+      "enabled": true,
+      "createdAt": "2026-03-25T23:59:00+08:00",
+      "updatedAt": "2026-03-25T23:59:00+08:00",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "凌晨 1:00 自动执行 Git 同步。请执行：\n1. cd /root/.openclaw\n2. git add .\n3. git diff --cached --quiet || git commit -m \"daily-auto: $(date +%Y-%m-%d)\"\n4. git push origin main (或当前分支)\n5. 成功：记录到 memory；失败：通过 feishu 通知用户"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce",
+        "channel": "feishu",
+        "to": "user:ou_bd0bb7c1d6a89633ec6a14ec8c04ef61"
+      },
+      "state": {
+        "nextRunAtMs": 1778691600000,
+        "lastRunAtMs": 1778605200005,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 132155,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      },
+      "updatedAtMs": 1778605332160
+    },
+    {
+      "id": "main-weekly-learning",
+      "name": "CEO 每周学习反思",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 1"
+      },
+      "agentId": "main",
+      "session": "main",
+      "enabled": true,
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "请用四问学习法反思上周工作：\n\n1. 【听】上周处理了哪些任务？遇到什么问题？\n2. 【想】这些问题背后的模式是什么？\n3. 【变】如何优化工作方法？\n4. 【用】具体改进措施是什么？\n\n将反思写入 memory/learning-YYYY-MM-DD.md，并提取 1-3 个可迁移的模式。"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce",
+        "channel": "feishu",
+        "to": "user:ou_543d6577cd3ad27f748e5e8913838a1b"
+      },
+      "state": {
+        "nextRunAtMs": 1779069600000,
+        "lastRunAtMs": 1778464800004,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 373796,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true
+      },
+      "updatedAtMs": 1778483668253
+    },
+    {
+      "id": "sysadmin-weekly-learning",
+      "name": "系统维护员每周学习反思",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 1"
+      },
+      "agentId": "sysadmin",
+      "session": "sysadmin",
+      "enabled": true,
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "请用四问学习法反思上周系统维护工作：\n\n1. 【听】上周处理了哪些系统问题？发现哪些日志异常？\n2. 【想】这些问题背后的模式是什么？（配置问题？权限问题？定时任务问题？）\n3. 【变】如何优化维护流程？\n4. 【用】具体改进措施是什么？\n\n将反思写入 memory/learning-YYYY-MM-DD.md，并提取 1-3 个可迁移的维护模式。"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce",
+        "channel": "feishu",
+        "to": "user:ou_bd0bb7c1d6a89633ec6a14ec8c04ef61"
+      },
+      "state": {
+        "nextRunAtMs": 1779069600000,
+        "lastRunAtMs": 1778464800008,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 1392741,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1778466192749
+    },
+    {
+      "id": "strategist-weekly-learning",
+      "name": "战略规划师每周学习反思",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 1"
+      },
+      "agentId": "strategist",
+      "session": "strategist",
+      "enabled": true,
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "请用四问学习法反思上周战略规划工作：\n\n1. 【听】上周协助用户制定了哪些战略？遇到哪些阻力？\n2. 【想】这些战略问题背后的模式是什么？\n3. 【变】如何优化规划方法？\n4. 【用】具体改进措施是什么？\n\n将反思写入 memory/learning-YYYY-MM-DD.md，并提取 1-3 个可迁移的战略模式。"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce",
+        "channel": "feishu",
+        "to": "user:ou_72de9e52b705b59bcaaa61a679c92d46"
+      },
+      "state": {
+        "nextRunAtMs": 1779069600000,
+        "lastRunAtMs": 1778464800008,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 2097618,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1778466897626
+    },
+    {
+      "id": "lifehelper-weekly-learning",
+      "name": "生活助理每周学习反思",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 1"
+      },
+      "agentId": "lifehelper",
+      "session": "lifehelper",
+      "enabled": true,
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "请用四问学习法反思上周生活助理工作：\n\n1. 【听】上周帮用户处理了哪些生活事务？用户反馈如何？\n2. 【想】这些事务背后的模式是什么？\n3. 【变】如何优化服务方式？\n4. 【用】具体改进措施是什么？\n\n将反思写入 memory/learning-YYYY-MM-DD.md，并提取 1-3 个可迁移的生活服务模式。"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce",
+        "channel": "feishu",
+        "to": "user:ou_79fa84f314603ff9d7b6ef944e5d3c8c"
+      },
+      "state": {
+        "nextRunAtMs": 1779069600000,
+        "lastRunAtMs": 1778464800008,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 1685012,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1778466485020
+    },
+    {
+      "id": "healthadvisor-weekly-learning",
+      "name": "健康顾问每周学习反思",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 1"
+      },
+      "agentId": "healthadvisor",
+      "session": "healthadvisor",
+      "enabled": true,
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "请用四问学习法反思上周健康顾问工作：\n\n1. 【听】上周提供了哪些健康建议？用户执行情况如何？\n2. 【想】这些健康问题背后的模式是什么？\n3. 【变】如何优化健康指导方式？\n4. 【用】具体改进措施是什么？\n\n将反思写入 memory/learning-YYYY-MM-DD.md，并提取 1-3 个可迁移的健康管理模式。"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce",
+        "channel": "feishu",
+        "to": "user:ou_fb2e7f148b502e7981c11e9c0f2cace5"
+      },
+      "state": {
+        "nextRunAtMs": 1779069600000,
+        "lastRunAtMs": 1778464800008,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 2429762,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1778467229770
+    },
+    {
+      "id": "product-owner-weekly-learning",
+      "name": "产品负责人每周学习反思",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 1"
+      },
+      "agentId": "product-owner",
+      "session": "product-owner",
+      "enabled": true,
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "请用四问学习法反思上周产品管理工作：\n\n1. 【听】上周处理了哪些产品需求？与 Architect 同步了哪些内容？\n2. 【想】这些需求背后的模式是什么？\n3. 【变】如何优化需求管理流程？\n4. 【用】具体改进措施是什么？\n\n将反思写入 memory/learning-YYYY-MM-DD.md，并提取 1-3 个可迁移的产品管理模式。"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce",
+        "channel": "feishu",
+        "to": "user:ou_1f6a2206fbf18db40dd59acff15b2841"
+      },
+      "state": {
+        "nextRunAtMs": 1779069600000,
+        "lastRunAtMs": 1778464800008,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 627603,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1778465427611
+    },
+    {
+      "id": "architect-weekly-learning",
+      "name": "架构师每周学习反思",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 1"
+      },
+      "agentId": "architect",
+      "session": "architect",
+      "enabled": true,
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "请用四问学习法反思上周技术架构工作：\n\n1. 【听】上周设计了哪些技术方案？解决了哪些技术问题？\n2. 【想】这些技术问题背后的模式是什么？\n3. 【变】如何优化架构设计方法？\n4. 【用】具体改进措施是什么？\n\n将反思写入 memory/learning-YYYY-MM-DD.md，并提取 1-3 个可迁移的技术模式。"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce",
+        "channel": "feishu",
+        "to": "user:ou_c6acb488a489dbcefc955a4a1c216bd0"
+      },
+      "state": {
+        "nextRunAtMs": 1779069600000,
+        "lastRunAtMs": 1778464800009,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 1210607,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0
+      },
+      "updatedAtMs": 1778466010616
+    },
+    {
+      "id": "ai-daily-news",
+      "name": "AI 资讯日报",
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 7 * * *"
+      },
+      "agentId": "sysadmin",
+      "session": "sysadmin",
+      "enabled": true,
+      "createdAt": "2026-04-14T22:45:00+08:00",
+      "updatedAt": "2026-05-10T08:31:28+08:00",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "每天早上 7:30 读取研究员中间文件并编辑推送。\n\n【编辑流程 — 只做编辑，不做搜索】\n\n1. 读取研究员素材文件：\n   /root/.openclaw/workspace/ai-news-research/【今日日期YYYY-MM-DD】.md\n   如果今日文件不存在，读取最新的（ls -t 取第一个）\n\n2. 对每条素材用三个筛子过滤：\n   - 对我有什么用？（没有行动价值的不推）\n   - 今天是否已推过同类？（去重）\n   - 可执行性打分 >2（不够的不推）\n\n3. 按新结构排版推送（channel=feishu, target=user:ou_bd0bb7c1d6a89633ec6a14ec8c04ef61）：\n\n🔥 机会（赚钱/可复制的机会）\n每条带「→ 行动价值」一行\n\n🔧 工具（可立即用的项目）\n每条带「→ 怎么用」一行\n\n📡 信号（行业大事）\n用 🔴🟡 标记重要性\n\n底部加一行 ⚡ 本周行动建议\n\n4. 零噪音日处理：\n   如果过滤后没有任何值得推的内容 → 只发一行：\n   「📡 今日 AI 资讯无值得关注的内容。研究员素材已存档。」\n\n5. 硬约束：\n   - 不重复已推内容（同一主题一周内不出第二次，除非有实质性进展）\n   - 每条必须在30字内说清价值\n   - 总篇幅控制在飞书一屏内"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce",
+        "channel": "feishu",
+        "to": "user:ou_bd0bb7c1d6a89633ec6a14ec8c04ef61"
+      },
+      "state": {
+        "lastRunAtMs": 1778628600006,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 76255,
+        "lastDeliveryStatus": "not-delivered",
+        "consecutiveErrors": 0,
+        "nextRunAtMs": 1778715000000,
+        "lastDelivered": false
+      },
+      "updatedAtMs": 1778628676261
+    },
+    {
+      "id": "parenting-weekly-learning",
+      "name": "育儿专家每周学习反思",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 1"
+      },
+      "agentId": "parenting",
+      "session": "healthadvisor",
+      "enabled": true,
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "请用四问学习法反思上周健康顾问工作：\n\n1. 【听】上周提供了哪些健康建议？用户执行情况如何？\n2. 【想】这些健康问题背后的模式是什么？\n3. 【变】如何优化健康指导方式？\n4. 【用】具体改进措施是什么？\n\n将反思写入 memory/learning-YYYY-MM-DD.md，并提取 1-3 个可迁移的健康管理模式。"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce",
+        "channel": "feishu",
+        "to": "user:ou_2e077077145f02770648a4c4cdd822a2",
+        "account": "parenting"
+      },
+      "state": {
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "nextRunAtMs": 1779069600000,
+        "lastRunAtMs": 1778464800009,
+        "lastStatus": "ok",
+        "lastDurationMs": 879823,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered"
+      },
+      "updatedAtMs": 1778465679832
+    },
+    {
+      "id": "investor-weekly-learning",
+      "name": "投资顾问每周学习反思",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * 1"
+      },
+      "agentId": "investor",
+      "session": "healthadvisor",
+      "enabled": true,
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "请用四问学习法反思上周健康顾问工作：\n\n1. 【听】上周提供了哪些健康建议？用户执行情况如何？\n2. 【想】这些健康问题背后的模式是什么？\n3. 【变】如何优化健康指导方式？\n4. 【用】具体改进措施是什么？\n\n将反思写入 memory/learning-YYYY-MM-DD.md，并提取 1-3 个可迁移的健康管理模式。"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "announce",
+        "channel": "feishu",
+        "to": "user:ou_4efd035b57093ee5e476e0542ee42edb",
+        "account": "investor"
+      },
+      "state": {
+        "consecutiveErrors": 0,
+        "lastRunStatus": "ok",
+        "nextRunAtMs": 1779069600000,
+        "lastRunAtMs": 1778464800009,
+        "lastStatus": "ok",
+        "lastDurationMs": 139091,
+        "lastDelivered": true,
+        "lastDeliveryStatus": "delivered"
+      },
+      "updatedAtMs": 1778464939100,
+      "updatedAt": "2026-05-09T08:05:00+08:00"
+    },
+    {
+      "id": "ai-news-research",
+      "name": "AI 资讯研究员",
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 6 * * *"
+      },
+      "agentId": "sysadmin",
+      "session": "sysadmin",
+      "enabled": true,
+      "createdAt": "2026-05-10T08:31:28+08:00",
+      "updatedAt": "2026-05-10T08:31:28+08:00",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "每天早上 6:30 运行，为 AI 资讯日报搜集素材。\n\n【必做事项 — 三个搜一个都不能少】\n\n用 tavily_search 分别搜索（search_depth=advanced, time_range=week, max_results=10）：\n\n1. GitHub 开源项目：\n   - \"AI 人工智能 GitHub 开源项目 trending 2026年5月\"\n   - 额外关键词搜索：\"LLM tools GitHub trending\"（英文搜一次补中文结果）\n   - 提取：项目名+stars+一句话功能+对我的价值\n\n2. 商业化/赚钱机会：\n   - \"AI 商业化 赚钱 创业 变现 新产品 2026年5月\"\n   - 提取：什么模式+谁在赚+我能复制吗\n\n3. 行业大事件：\n   - \"AI 行业重大事件 融资 政策 技术突破 2026年5月\"\n   - 提取：事件+影响+对我的含义\n\n【写入中间文件】\n路径：/root/.openclaw/workspace/ai-news-research/【今日日期YYYY-MM-DD】.md\n格式参照已有示例（2026-05-10.md），每条素材必须有：\n- 标题/名称\n- 来源+链接\n- 可行动性评分（1-5星）\n- 行动价值 或 「与我何干」一行\n\n【硬约束】\n- 融资新闻只收「对中国 AI 从业者有影响」的（国内公司融资 + 影响全球格局的巨头融资）\n- 没有行动价值的内容不收录\n- 不收录单纯的「又一个大模型发布」——要有差异化信息\n- 好内容不够就标「今日素材较少的领域」（不凑数）"
+      },
+      "sessionTarget": "isolated",
+      "delivery": {
+        "mode": "silent"
+      },
+      "state": {
+        "nextRunAtMs": 1778711400000,
+        "lastRunAtMs": 1778625000004,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 563188,
+        "lastDeliveryStatus": "unknown",
+        "consecutiveErrors": 4,
+        "lastError": "Delivering to Feishu requires target <chatId|user:openId|chat:chatId>"
+      },
+      "updatedAtMs": 1778625563192
+    },
+    {
+      "id": "b6b81114-15e0-4fb0-938d-9fffe443dea6",
+      "agentId": "lifehelper",
+      "sessionKey": "agent:lifehelper:cron:lifehelper-weekly-learning",
+      "name": "lifehelper-mothers-day-followup",
+      "enabled": false,
+      "deleteAfterRun": true,
+      "createdAtMs": 1778466461246,
+      "updatedAtMs": 1778637720046,
+      "schedule": {
+        "kind": "at",
+        "at": "2026-05-13T02:00:00.000Z"
+      },
+      "sessionTarget": "session:lifehelper",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "这是一条跟踪提醒：请向用户回访母亲节聚餐体验。上周（05-10）推荐了润园四季椰子鸡海岸城店作为母亲节聚餐方案，并提供了打包策略。请自然地询问：(1) 最后去了哪家？体验如何？(2) 打包方案执行了吗？老婆的反馈？(3) 妈妈和女儿吃得开心吗？将回访结果记录到 memory/2026-05-13.md，并更新 MEMORY.md 中相关的餐厅经验记录。",
+        "timeoutSeconds": 120
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "state": {
+        "lastRunAtMs": 1778637600007,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 120039,
+        "lastError": "cron: job execution timed out",
+        "lastErrorReason": "timeout",
+        "lastDeliveryStatus": "unknown",
+        "consecutiveErrors": 1
+      }
+    }
+  ]
+}
